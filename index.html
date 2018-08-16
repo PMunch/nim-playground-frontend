@@ -9,6 +9,9 @@
     <meta name="mobile-web-app-capable" content="yes">
     <link href='//fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
     <link href='styles.css' rel='stylesheet' type='text/css'>
+    <script src="codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <script src="codemirror/mode/python/python.js"></script>
 </head>
 
 <body>
@@ -21,22 +24,32 @@
       <div class="content">
         Hello
       </div>
+      <div class="buttons bottom">
+          Test
+          <a class="button run" href="#">Prev</a>
+          <a class="button run" href="#">Next</a>
+      </div>
     </div>
     <div class="code">
-      <div id="editor">echo "Hello world"</div>
-      <div id="output" class="content">
-        This is output!
+      <div id="editor"></div>
+      <div id="output">
+        <div class="buttons">
+          <a class="button run" href="#">Run!</a>
+        </div>
+        <div class="content">
+          This is output!
+        </div>
       </div>
     </div>
   </div>
 </div>
-<script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
-  var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/monokai");
-  editor.session.setMode("ace/mode/python");
-  editor.session.setTabSize(2);
-  editor.session.setUseSoftTabs(true);
+    var myCodeMirror = CodeMirror(document.getElementById("editor"), {
+      mode: "python",
+      value: "function hello() {system.prinln(\"Hello world\");",
+      tabSize: 2,
+      lineNumbers: true
+    });
 </script>
 </body>
 </html>

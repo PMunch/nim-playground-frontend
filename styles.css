@@ -45,6 +45,10 @@ body {
   font-size: 1em;
 }
 
+#editor .CodeMirror {
+  height: 100%;
+}
+
 #output {
   border-top: 6px solid gray;
   position: absolute;
@@ -52,4 +56,26 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.buttons {
+  width: 100%;
+  text-align: right;
+  background: lightgray;
+}
+.button {
+  display: inline-block;
+  background: dodgerblue;
+  color: white;
+  border: 1px solid lightblue;
+  padding: 0 0.9em;
+  height: 1.5em;
+  line-height:1.5em;
+  margin: 0.2em;
+  text-decoration: none;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 69px; /* Same as header height (body.top) */
 }
