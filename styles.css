@@ -47,6 +47,7 @@ body {
 
 #editor .CodeMirror {
   height: 100%;
+  font-family: 'Inconsolata', monospace;
 }
 
 #output {
@@ -58,16 +59,18 @@ body {
   left: 0;
 }
 
+#logs {
+  font-family: 'Inconsolata', monospace;
+}
+
 .buttons {
   width: 100%;
   text-align: right;
   background: lightgray;
 }
+
 .button {
   display: inline-block;
-  background: dodgerblue;
-  color: white;
-  border: 1px solid lightblue;
   padding: 0 0.9em;
   height: 1.5em;
   line-height:1.5em;
@@ -75,7 +78,43 @@ body {
   text-decoration: none;
 }
 
+.button.run {
+  background: dodgerblue;
+  color: white;
+  border: 1px solid lightblue;
+}
+
+.button.next {
+  background: dodgerblue;
+  color: white;
+  border: 1px solid lightblue;
+}
+
+.button.prev {
+  background: gray;
+  color: white;
+  border: 1px solid white;
+}
+
+.button.output {
+  background: gray;
+  color: white;
+  border: 1px solid white;
+}
+
 .bottom {
   position: absolute;
   bottom: 69px; /* Same as header height (body.top) */
+}
+
+span.hint {
+  color: blue;
+}
+
+span.brackets {
+  color: green;
+}
+
+span.error {
+  color: red;
 }

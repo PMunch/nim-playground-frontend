@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link href='//fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <link href='styles.css' rel='stylesheet' type='text/css'>
     <script src="codemirror/lib/codemirror.js"></script>
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
@@ -26,18 +26,18 @@
       </div>
       <div class="buttons bottom">
           Test
-          <a class="button run" href="#">Prev</a>
-          <a class="button run" href="#">Next</a>
+          <a class="button prev" href="#">Prev</a>
+          <a class="button next" href="#">Next</a>
       </div>
     </div>
     <div class="code">
       <div id="editor"></div>
       <div id="output">
         <div class="buttons">
-          <a class="button run" href="#">Run!</a>
+          <a class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</a>
+          <a class="button run" href="#" onclick="runCode()">Run!</a>
         </div>
-        <div class="content">
-          This is output!
+        <div class="content" id="logs">
         </div>
       </div>
     </div>
@@ -50,6 +50,47 @@
       tabSize: 2,
       lineNumbers: true
     });
+    var output = "output";
+    var outputMsg = "";
+    var debugMsg = "";
+    function runCode() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var messages = JSON.parse(this.responseText);
+          outputMsg = messages.log;
+          debugMsg = messages.compileLog.replace(/\n/g,"<br/>").replace(/\[[^\]]*\]/g, function (x) {
+            return "<span class=\"brackets\">" + x + "</span>"
+          }).replace(/Hint: /g, "<span class=\"hint\">Hint: </span>").replace(
+            /nimcode.nim\(.*\) Error: /g, function (x) {
+            return x.replace("Error: ", "<span class=\"error\">Error: </span>")
+          });
+          setOutput();
+        }
+      };
+      xhttp.open("POST", "http://lvh.me:5000/compile", true);
+      xhttp.setRequestHeader("Content-type", "text/plain");
+      xhttp.send("{\"code\":" + JSON.stringify(myCodeMirror.getValue()) + ", \"compileTarget\":\"c\"}");
+    }
+    function switchOutput() {
+      if(output == "output") {
+        output = "debug";
+      } else {
+        output = "output";
+      }
+      setOutput(true);
+    }
+    function setOutput(force = false) {
+      if(output == "output" && (outputMsg != "" || force == true)) {
+        document.getElementById("logs").innerText = outputMsg;
+        document.getElementById("outputButton").innerText = "Showing: output";
+        output = "output";
+      } else {
+        document.getElementById("logs").innerHTML = debugMsg;
+        document.getElementById("outputButton").innerText = "Showing: debug";
+        output = "debug";
+      }
+    }
 </script>
 </body>
 </html>
