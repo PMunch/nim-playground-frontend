@@ -17,17 +17,17 @@
 <body>
 <div class="container">
   <div class="header">
-      <a class="left logo" href="/list"><img src="https://nim-lang.org/assets/img/logo.svg"/> A Tour of Nim</a>
+      <a class="logo" href="/list"><img src="logo.svg"/> A Tour of Nim</a>
   </div>
   <div class="body">
     <div class="explanations">
-      <div class="content">
+      <div class="content" id="content">
         Hello
       </div>
       <div class="buttons bottom">
-          Test
-          <a class="button prev" href="#">Prev</a>
-          <a class="button next" href="#">Next</a>
+          <span id="navigation">Test</span>
+          <a class="button prev" href="#" onclick="pagenum-=1; setPage();">Prev</a>
+          <a class="button next" href="#" onclick="pagenum+=1; setPage();">Next</a>
       </div>
     </div>
     <div class="code">
@@ -44,53 +44,78 @@
   </div>
 </div>
 <script>
-    var myCodeMirror = CodeMirror(document.getElementById("editor"), {
-      mode: "python",
-      value: "function hello() {system.prinln(\"Hello world\");",
-      tabSize: 2,
-      lineNumbers: true
-    });
-    var output = "output";
-    var outputMsg = "";
-    var debugMsg = "";
-    function runCode() {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          var messages = JSON.parse(this.responseText);
-          outputMsg = messages.log;
-          debugMsg = messages.compileLog.replace(/\n/g,"<br/>").replace(/\[[^\]]*\]/g, function (x) {
-            return "<span class=\"brackets\">" + x + "</span>"
-          }).replace(/Hint: /g, "<span class=\"hint\">Hint: </span>").replace(
-            /nimcode.nim\(.*\) Error: /g, function (x) {
-            return x.replace("Error: ", "<span class=\"error\">Error: </span>")
-          });
-          setOutput();
-        }
-      };
-      xhttp.open("POST", "http://lvh.me:5000/compile", true);
-      xhttp.setRequestHeader("Content-type", "text/plain");
-      xhttp.send("{\"code\":" + JSON.stringify(myCodeMirror.getValue()) + ", \"compileTarget\":\"c\"}");
-    }
-    function switchOutput() {
-      if(output == "output") {
-        output = "debug";
-      } else {
-        output = "output";
+  var myCodeMirror = CodeMirror(document.getElementById("editor"), {
+    mode: "python",
+    value: "function hello() {system.prinln(\"Hello world\");",
+    tabSize: 2,
+    lineNumbers: true
+  });
+  var pagenum = 0;
+  var data = [
+    {
+      "title": "Welcome",
+      "content": "Welcome to a tour of Nim!",
+      "code": "echo 100"
+    },
+    {
+      "title": "Second page",
+      "content": "Welcome to a tour of Nim, part 2!",
+      "code": "echo 200"
+    },
+  ];
+  setPage();
+  var output = "output";
+  var outputMsg = "";
+  var debugMsg = "";
+  function runCode() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var messages = JSON.parse(this.responseText);
+        outputMsg = messages.log;
+        debugMsg = messages.compileLog.replace(/\n/g,"<br/>").replace(/\[[^\]]*\]/g, function (x) {
+          return "<span class=\"brackets\">" + x + "</span>"
+        }).replace(/Hint: /g, "<span class=\"hint\">Hint: </span>").replace(
+          /nimcode.nim\(.*\) Error: /g, function (x) {
+          return x.replace("Error: ", "<span class=\"error\">Error: </span>")
+        });
+        setOutput();
       }
-      setOutput(true);
+    };
+    xhttp.open("POST", "http://lvh.me:5000/compile", true);
+    xhttp.setRequestHeader("Content-type", "text/plain");
+    xhttp.send("{\"code\":" + JSON.stringify(myCodeMirror.getValue()) + ", \"compileTarget\":\"c\"}");
+  }
+  function switchOutput() {
+    if(output == "output") {
+      output = "debug";
+    } else {
+      output = "output";
     }
-    function setOutput(force = false) {
-      if(output == "output" && (outputMsg != "" || force == true)) {
-        document.getElementById("logs").innerText = outputMsg;
-        document.getElementById("outputButton").innerText = "Showing: output";
-        output = "output";
-      } else {
-        document.getElementById("logs").innerHTML = debugMsg;
-        document.getElementById("outputButton").innerText = "Showing: debug";
-        output = "debug";
-      }
+    setOutput(true);
+  }
+  function setOutput(force = false) {
+    if(output == "output" && (outputMsg != "" || force == true)) {
+      document.getElementById("logs").innerText = outputMsg;
+      document.getElementById("outputButton").innerText = "Showing: output";
+      output = "output";
+    } else {
+      document.getElementById("logs").innerHTML = debugMsg;
+      document.getElementById("outputButton").innerText = "Showing: debug";
+      output = "debug";
     }
+  }
+  function setPage() {
+    if(pagenum <0) pagenum = 0;
+    if(pagenum >= data.length) pagenum = data.length - 1;
+    document.getElementById("content").innerHTML = "<h1>" + data[pagenum].title + "</h1><p>" + data[pagenum].content + "</p";
+    document.getElementById("navigation").innerText = (pagenum + 1) + "/" + data.length + ": " + data[pagenum].title;
+    myCodeMirror.setValue(data[pagenum].code);
+    outputMsg = "";
+    debugMsg = "";
+    output = "output";
+    setOutput(true);
+  }
 </script>
 </body>
 </html>

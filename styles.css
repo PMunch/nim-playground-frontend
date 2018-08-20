@@ -1,6 +1,6 @@
 .body {
   position: fixed;
-  top: 69px;
+  top: 2.25em;
   bottom: 0;
   left: 0;
   right: 0;
@@ -29,6 +29,20 @@
 }
 .header {
   background: gray;
+}
+.header img {
+  float: left;
+  height: 0.9em;
+  padding: 0.1em 0.5em;
+}
+.logo {
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  color: #363636;
+  font-size: 2em;
+  font-weight: 300;
+  line-height: 1.125;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 html,
 body {
@@ -104,7 +118,7 @@ body {
 
 .bottom {
   position: absolute;
-  bottom: 69px; /* Same as header height (body.top) */
+  bottom: 2.25em; /* Same as header height (body.top) */
 }
 
 span.hint {
