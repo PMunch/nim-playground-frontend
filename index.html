@@ -11,7 +11,7 @@
     <link href='styles.css' rel='stylesheet' type='text/css'>
     <script src="codemirror/lib/codemirror.js"></script>
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
-    <script src="codemirror/mode/python/python.js"></script>
+    <script src="codemirror-nim.js"></script>
 </head>
 
 <body>
@@ -22,7 +22,40 @@
   <div class="body">
     <div class="explanations">
       <div class="content" id="content">
-        Hello
+        <div id="page-1">
+          <h1>Welcome to a tour of Nim</h1>
+          <p>In this tour we'll go through some of the different aspects of the Nim programming language so you can get to know it better.
+          If you are considering to try Nim out, but don't want to download anything, this is a great way to get a little more insight.</p>
+          <p>Throughout the tour there will be code snippets like the one you see to the right. To run these snippets you can hit the "Run!"
+          button below the code window. This will compile the code on a server, and show you the output of the compilation, along with the
+          output of your program.</p>
+          <p>The gray button next to the run button allows you to switch between the compilation output, and the execution output. When your
+          code has an error it will automatically switch to the compilation output.</p>
+          <p>But enough talking! Try to run the code snippet on the right, and hit the "Next" button below this text when you're ready for more.</p>
+          <code>echo "Hello world!"</code>
+        </div>
+        <div id="page-2">
+          <h1>Types and turbulence</h1>
+          <p>A feature of most compiled languages are types, or rather type checking. Even dynamically typed languages like Python and Ruby has types
+          they just prefer to hide them from you. Nim on the other hand comes with a rich and flexible type system that allows us not only to avoid
+          many of the most common runtime errors, but also work on problem-level abstractions.</p>
+          <code># Single-line comments start with a #
+#[
+  This is a multiline comment. We'll use these and single-line comments to
+  explain things in-line with the code.
+]#
+var                     # Declare (and assign) variables,
+  letter: char = 'n'    # with or without type annotations
+  lang = "N" & "im"
+  nLength : int = len(lang)
+  boat: float
+  truth: bool = false</code>
+        </div>
+        <div id="page-1">
+          <h1>Welcome to a tour of Nim</h1>
+          <p></p>
+          <code>echo "Hello world!"</code>
+        </div>
       </div>
       <div class="buttons bottom">
           <span id="navigation">Test</span>
@@ -45,24 +78,12 @@
 </div>
 <script>
   var myCodeMirror = CodeMirror(document.getElementById("editor"), {
-    mode: "python",
-    value: "function hello() {system.prinln(\"Hello world\");",
+    mode: "nim",
+    value: "echo \"Hello world\"",
     tabSize: 2,
     lineNumbers: true
   });
   var pagenum = 0;
-  var data = [
-    {
-      "title": "Welcome",
-      "content": "Welcome to a tour of Nim!",
-      "code": "echo 100"
-    },
-    {
-      "title": "Second page",
-      "content": "Welcome to a tour of Nim, part 2!",
-      "code": "echo 200"
-    },
-  ];
   setPage();
   var output = "output";
   var outputMsg = "";
@@ -106,11 +127,18 @@
     }
   }
   function setPage() {
+    var pages = document.querySelectorAll("div[id^=page-]");
+    for (var page of pages) {
+      page.style.display = "none";
+    }
+    var maxPages = pages.length
+    console.log(maxPages);
     if(pagenum <0) pagenum = 0;
-    if(pagenum >= data.length) pagenum = data.length - 1;
-    document.getElementById("content").innerHTML = "<h1>" + data[pagenum].title + "</h1><p>" + data[pagenum].content + "</p";
-    document.getElementById("navigation").innerText = (pagenum + 1) + "/" + data.length + ": " + data[pagenum].title;
-    myCodeMirror.setValue(data[pagenum].code);
+    if(pagenum >= maxPages) pagenum = maxPages - 1;
+    var page = document.getElementById("page-" + (pagenum + 1));
+    page.style.display = "block";
+    document.getElementById("navigation").innerText = (pagenum + 1) + "/" + maxPages + ": " + page.getElementsByTagName("h1")[0].innerText;
+    myCodeMirror.setValue(page.getElementsByTagName("code")[0].innerText);
     outputMsg = "";
     debugMsg = "";
     output = "output";
