@@ -150,13 +150,39 @@ div[id^=page-] {
 }
 
 span.hint {
-  color: blue;
+  color: #66d9ef;
 }
 
 span.brackets {
-  color: green;
+  color: #50fa7b;
 }
 
 span.error {
   color: red;
 }
+
+.button.is-loading {
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.button.is-loading:after {
+  animation: spinAround 500ms infinite linear;
+  border: 2px solid #333;
+  border-radius: 290486px;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  display: block;
+  height: 1em;
+  position: relative;
+  width: 1em;
+  left: calc(50% - (1em / 2));
+  top: -1.3em;
+}
+
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(359deg); } }
