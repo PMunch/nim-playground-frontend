@@ -41,6 +41,32 @@
     lineNumbers: true,
     theme: "dracula"
   });
+  var urlParams;
+  (window.onpopstate = function () {
+      var match,
+          pl     = /\+/g,  // Regex for replacing addition symbol with a space
+          search = /([^&=]+)=?([^&]*)/g,
+          decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+          query  = window.location.search.substring(1);
+
+      urlParams = {};
+      while (match = search.exec(query))
+         urlParams[decode(match[1])] = decode(match[2]);
+      if("ix" in urlParams) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            outputMsg = "";
+            debugMsg = "";
+            setOutput(true);
+            myCodeMirror.setValue(this.responseText);
+          }
+        };
+        xhttp.open("GET", "/ix/" + urlParams["ix"], true);
+        xhttp.send(null);
+      }
+  })();
+
   var output = "output";
   var outputMsg = "";
   var debugMsg = "";
