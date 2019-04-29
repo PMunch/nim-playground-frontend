@@ -4,8 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100%;
-  overflow: hidden;
+  overflow: auto;
   background-color: #171921;
   color: #fff;
 }
