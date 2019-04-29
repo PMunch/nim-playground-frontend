@@ -6,6 +6,8 @@
   right: 0;
   height: 100%;
   overflow: hidden;
+  background-color: #171921;
+  color: #fff;
 }
 .explanations, .code {
   position: absolute;
@@ -15,12 +17,12 @@
   overflow: hidden;
 }
 .explanations {
-  border-right: 6px solid gray;
+  border-right: 6px solid #282a36;
   left: 0;
   width: 50%;
 }
 .code {
-  border-left: 6px solid gray;
+  border-left: 6px solid #282a36;
   left: 50%;
   right: 0;
 }
@@ -29,7 +31,7 @@
   font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 .header {
-  background: gray;
+  background: #171921;
 }
 .header img {
   float: left;
@@ -38,7 +40,7 @@
 }
 .logo {
   font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  color: #363636;
+  color: #fff;
   font-size: 2em;
   font-weight: 300;
   line-height: 1.125;
@@ -52,7 +54,7 @@ body {
 }
 h1 {
   margin: 0;
-  color: #262626;
+  color: #fff;
 }
 div[id^=page-] > code:last-of-type {
   display: none;
@@ -76,7 +78,7 @@ div[id^=page-] {
 }
 
 #output {
-  border-top: 6px solid gray;
+  border-top: 6px solid #282a36;
   position: absolute;
   top: 70%;
   right: 0;
@@ -91,12 +93,12 @@ div[id^=page-] {
 .buttons {
   width: 100%;
   text-align: right;
-  background: lightgray;
+  background: #282a36;
 }
 
 .button {
   display: inline-block;
-  padding: 0 0.9em;
+  padding: 0.2em 0.9em;
   height: 1.5em;
   line-height:1.5em;
   margin: 0.2em;
@@ -104,27 +106,42 @@ div[id^=page-] {
 }
 
 .button.run {
-  background: dodgerblue;
-  color: white;
-  border: 1px solid lightblue;
+  background: #ffe953;
+  color: #333;
+  border-radius: 4px;
+}
+
+.button.run:hover {
+  background: #ffe220;
 }
 
 .button.next {
-  background: dodgerblue;
-  color: white;
-  border: 1px solid lightblue;
+  background: #ffe953;
+  color: #333;
+  border-radius: 4px;
+}
+
+.button.next:hover {
+  background: #ffe220;
 }
 
 .button.prev {
-  background: gray;
-  color: white;
-  border: 1px solid white;
+  background: #ccc;
+  color: #333;
+  border-radius: 4px;
 }
 
 .button.output {
-  background: gray;
-  color: white;
-  border: 1px solid white;
+  background: #ccc;
+  color: #333;
+  border-radius: 4px;
+}
+
+.button.share {
+  background: #ccc;
+  color: #333;
+  border-radius: 4px;
+  float: left;
 }
 
 .bottom {

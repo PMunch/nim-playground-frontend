@@ -11,6 +11,7 @@
     <link href='styles.css' rel='stylesheet' type='text/css'>
     <script src="codemirror/lib/codemirror.js"></script>
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="codemirror/dracula.css">
     <script src="codemirror-nim.js"></script>
 </head>
 
@@ -91,6 +92,7 @@ echo z
       <div id="editor"></div>
       <div id="output">
         <div class="buttons">
+          <!-- <a class="button share" href="#" onclick="alert('hello world');">Share via ix</a> -->
           <a class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</a>
           <a class="button run" href="#" onclick="runCode()">Run!</a>
         </div>
@@ -105,7 +107,8 @@ echo z
     mode: "nim",
     value: "echo \"Hello world\"",
     tabSize: 2,
-    lineNumbers: true
+    lineNumbers: true,
+    theme: "dracula"
   });
   var pagenum = 0;
   setPage();
