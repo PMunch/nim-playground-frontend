@@ -74,7 +74,7 @@
     setOutput(true);
   }
   function setOutput(force = false) {
-    if(output == "output" && (outputMsg != "" || force == true)) {
+    if(output == "output" && (outputMsg != "\n" || force == true)) {
       document.getElementById("logs").innerText = outputMsg;
       document.getElementById("outputButton").innerText = "Showing: output";
       output = "output";
