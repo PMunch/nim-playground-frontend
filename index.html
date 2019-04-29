@@ -24,7 +24,7 @@
     <div id="editor"></div>
     <div id="output">
       <div class="buttons">
-        <a class="button share" href="#" onclick="alert('hello world');">Share via ix</a>
+        <a class="button share" id="sharebutton" href="#" onclick="shareCode()">Share via ix</a>
         <a class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</a>
         <a class="button run" id="runbutton" href="#" onclick="runCode()">Run!</a>
       </div>
@@ -64,6 +64,22 @@
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send("{\"code\":" + JSON.stringify(myCodeMirror.getValue()) + ", \"compilationTarget\":\"c\"}");
     document.getElementById("runbutton").classList.add("is-loading");
+  }
+  function shareCode() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        outputMsg = this.responseText;
+        debugMsg = "";
+        output = "output";
+        setOutput(true);
+        document.getElementById("sharebutton").classList.remove("is-loading");
+      }
+    };
+    xhttp.open("POST", "/ix", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send("{\"code\":" + JSON.stringify(myCodeMirror.getValue()) + ", \"compilationTarget\":\"c\"}");
+    document.getElementById("sharebutton").classList.add("is-loading");
   }
   function switchOutput() {
     if(output == "output") {
