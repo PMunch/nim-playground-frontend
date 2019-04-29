@@ -36,13 +36,13 @@
 <script>
   var myCodeMirror = CodeMirror(document.getElementById("editor"), {
     mode: "nim",
-    value: "echo \"Hello world\"",
+    value: "",
     tabSize: 2,
     lineNumbers: true,
     theme: "dracula"
   });
   var urlParams;
-  (window.onpopstate = function () {
+  (window.onload = function () {
       var match,
           pl     = /\+/g,  // Regex for replacing addition symbol with a space
           search = /([^&=]+)=?([^&]*)/g,
@@ -56,7 +56,7 @@
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-            outputMsg = "";
+            outputMsg = "http://ix.io/" + urlParams["ix"] + "/nim";
             debugMsg = "";
             setOutput(true);
             myCodeMirror.setValue(this.responseText);
@@ -66,6 +66,26 @@
         xhttp.send(null);
       }
   })();
+
+  function updateURLParameter(url, param, paramVal){
+      var newAdditionalURL = "";
+      var tempArray = url.split("?");
+      var baseURL = tempArray[0];
+      var additionalURL = tempArray[1];
+      var temp = "";
+      if (additionalURL) {
+          tempArray = additionalURL.split("&");
+          for (var i=0; i<tempArray.length; i++){
+              if(tempArray[i].split('=')[0] != param){
+                  newAdditionalURL += temp + tempArray[i];
+                  temp = "&";
+              }
+          }
+      }
+
+      var rows_txt = temp + "" + param + "=" + paramVal;
+      return baseURL + "?" + newAdditionalURL + rows_txt;
+  }
 
   var output = "output";
   var outputMsg = "";
@@ -100,6 +120,7 @@
         output = "output";
         setOutput(true);
         document.getElementById("sharebutton").classList.remove("is-loading");
+        window.history.pushState(null, null, updateURLParameter(document.location.href, "ix", this.responseText.slice(13, 17)));
       }
     };
     xhttp.open("POST", "/ix", true);
