@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <title>A Tour of Nim</title>
+    <title>Nim playground</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <link href='styles.css' rel='stylesheet' type='text/css'>
     <script src="codemirror/lib/codemirror.js"></script>
+    <script src="codemirror/mode/nim/nim.js"></script>
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="codemirror/dracula.css">
     <script src="codemirror-nim.js"></script>
@@ -18,86 +19,17 @@
 <body>
 <div class="container">
   <div class="header">
-      <a class="logo" href="/list"><img src="logo.svg"/> A Tour of Nim</a>
+      <a class="logo" href="/list"><img src="logo.svg"/>Playground</a>
   </div>
   <div class="body">
-    <div class="explanations">
-      <div class="content" id="content">
-        <div id="page-1">
-          <h1>Welcome to a tour of Nim</h1>
-          <p>In this tour we'll go through some of the different aspects of the Nim programming language so you can get to know it better.
-          If you are considering to try Nim out, but don't want to download anything, this is a great way to get a little more insight.</p>
-          <p>Throughout the tour there will be code snippets like the one you see to the right. To run these snippets you can hit the "Run!"
-          button below the code window. This will compile the code on a server, and show you the output of the compilation, along with the
-          output of your program.</p>
-          <p>The gray button next to the run button allows you to switch between the compilation output, and the execution output. When your
-          code has an error it will automatically switch to the compilation output.</p>
-          <p>But enough talking! Try to run the code snippet on the right, and hit the "Next" button below this text when you're ready for more.</p>
-          <code># Single-line comments start with a #
-#[
-  This is a multiline comment. We'll use these and single-line comments to
-  explain things in-line with the code.
-]#
-echo "Hello world!" # This should put the string "Hello world!" in the output field below</code>
-        </div>
-        <div id="page-2">
-          <h1>Assignment</h1>
-          <p>Assigning values to identifiers is a core part of any imperative language. It's how we name things, and how we keep track of values.
-          In Nim we have three types of assignment, <code>var</code> which creates an assignment that can change, <code>let</code> which creates an
-          assignment that can't be changed, and <code>const</code> which creates a compile-time assignment.</p>
-          <p>The difference between <code>let</code> and <code>const</code> is that the former can be assigned to at run-time while the latter has
-          to know it's value during compilation. Generally it's good practice to use the least powerful construct applicable, so using <code>let</code>
-          when you're only assigning once is considered good practice.</p>
-          <p>When you compile this code snippet you will get a compilation error, this is the compiler telling you that there is something in your
-          code that can't possibly work. If you comment out the offending lines you will see that the compilation completes. Notice how <code>let</code>
-          and <code>const</code> give different error messages. <code>const</code> is here completely opaque with the value 300.</p>
-          <code>var x = 100
-let y = 200
-const z = 300
-
-x = 50 # This works fine
-y = 75 # Error: 'y' cannot be assigned to
-z = 95 # Error: 300 cannot be assigned to
-
-echo x
-echo y
-echo z
-          </code>
-        </div>
-        <div id="page-3">
-          <h1>Types and turbulence</h1>
-          <p>A feature of most compiled languages are types, or rather type checking. Even dynamically typed languages like Python and Ruby has types
-          they just prefer to hide them from you. Nim on the other hand comes with a rich and flexible type system that allows us not only to avoid
-          many of the most common runtime errors, but also work on problem-level abstractions.</p>
-          <code>var                     # Declare (and assign) variables,
-  letter: char = 'n'    # with or without type annotations
-  lang = "N" & "im"
-  nLength : int = len(lang)
-  boat: float
-  truth: bool = false</code>
-        </div>
-        <div id="page-4">
-          <h1>Welcome to a tour of Nim</h1>
-          <p></p>
-          <code>echo "Hello world!"</code>
-        </div>
+    <div id="editor"></div>
+    <div id="output">
+      <div class="buttons">
+        <a class="button share" href="#" onclick="alert('hello world');">Share via ix</a>
+        <a class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</a>
+        <a class="button run" href="#" onclick="runCode()">Run!</a>
       </div>
-      <div class="buttons bottom">
-          <span id="navigation">Test</span>
-          <a class="button prev" href="#" onclick="pagenum-=1; gotoPage();">Prev</a>
-          <a class="button next" href="#" onclick="pagenum+=1; gotoPage();">Next</a>
-      </div>
-    </div>
-    <div class="code">
-      <div id="editor"></div>
-      <div id="output">
-        <div class="buttons">
-          <!-- <a class="button share" href="#" onclick="alert('hello world');">Share via ix</a> -->
-          <a class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</a>
-          <a class="button run" href="#" onclick="runCode()">Run!</a>
-        </div>
-        <div class="content" id="logs">
-        </div>
+      <div class="content" id="logs">
       </div>
     </div>
   </div>
@@ -110,43 +42,6 @@ echo z
     lineNumbers: true,
     theme: "dracula"
   });
-  var pagenum = 0;
-  setPage();
-  var urlParams;
-  (window.onpopstate = function () {
-      var match,
-          pl     = /\+/g,  // Regex for replacing addition symbol with a space
-          search = /([^&=]+)=?([^&]*)/g,
-          decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-          query  = window.location.search.substring(1);
-
-      urlParams = {};
-      while (match = search.exec(query))
-         urlParams[decode(match[1])] = decode(match[2]);
-      if("page" in urlParams) {
-        pagenum = parseInt(urlParams["page"]) - 1;
-        setPage();
-      }
-  })();
-  function updateURLParameter(url, param, paramVal){
-      var newAdditionalURL = "";
-      var tempArray = url.split("?");
-      var baseURL = tempArray[0];
-      var additionalURL = tempArray[1];
-      var temp = "";
-      if (additionalURL) {
-          tempArray = additionalURL.split("&");
-          for (var i=0; i<tempArray.length; i++){
-              if(tempArray[i].split('=')[0] != param){
-                  newAdditionalURL += temp + tempArray[i];
-                  temp = "&";
-              }
-          }
-      }
-
-      var rows_txt = temp + "" + param + "=" + paramVal;
-      return baseURL + "?" + newAdditionalURL + rows_txt;
-  }
   var output = "output";
   var outputMsg = "";
   var debugMsg = "";
@@ -165,7 +60,7 @@ echo z
         setOutput();
       }
     };
-    xhttp.open("POST", "http://lvh.me:5000/compile", true);
+    xhttp.open("POST", "/compile", true);
     xhttp.setRequestHeader("Content-type", "text/plain");
     xhttp.send("{\"code\":" + JSON.stringify(myCodeMirror.getValue()) + ", \"compileTarget\":\"c\"}");
   }
@@ -187,31 +82,6 @@ echo z
       document.getElementById("outputButton").innerText = "Showing: debug";
       output = "debug";
     }
-  }
-  function gotoPage() {
-    var pages = document.querySelectorAll("div[id^=page-]");
-    var maxPages = pages.length
-    if(pagenum <0) pagenum = 0;
-    if(pagenum >= maxPages) pagenum = maxPages - 1;
-    document.location = updateURLParameter(document.location.href, "page", pagenum + 1);
-  }
-  function setPage() {
-    var pages = document.querySelectorAll("div[id^=page-]");
-    for (var page of pages) {
-      page.style.display = "none";
-    }
-    var maxPages = pages.length
-    if(pagenum <0) pagenum = 0;
-    if(pagenum >= maxPages) pagenum = maxPages - 1;
-    var page = document.getElementById("page-" + (pagenum + 1));
-    page.style.display = "block";
-    document.getElementById("navigation").innerText = (pagenum + 1) + "/" + maxPages + ": " + page.getElementsByTagName("h1")[0].innerText;
-    var codeBlocks = page.getElementsByTagName("code")
-    myCodeMirror.setValue(codeBlocks[codeBlocks.length - 1].innerText);
-    outputMsg = "";
-    debugMsg = "";
-    output = "output";
-    setOutput(true);
   }
 </script>
 </body>
