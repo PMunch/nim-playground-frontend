@@ -98,10 +98,13 @@ div[id^=page-] {
 .button {
   display: inline-block;
   padding: 0.2em 0.9em;
-  height: 1.5em;
   line-height:1.5em;
   margin: 0.2em;
   text-decoration: none;
+  font-size: 1em;
+  cursor: pointer;
+  border: 0px;
+  height: 2em;
 }
 
 .button.run {
