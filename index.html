@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Titillium+Web" rel="stylesheet">
     <link href='styles.css' rel='stylesheet' type='text/css'>
     <script src="codemirror/lib/codemirror.js"></script>
     <script src="codemirror/mode/nim/nim.js"></script>
+    <script type="text/javascript" src="purify.min.js"></script>
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="codemirror/dracula.css">
 </head>
@@ -21,14 +22,36 @@
     <a class="logo" href="https://nim-lang.org"><img src="logo.svg"/>Playground</a>
   </div>
   <div class="body">
-    <div id="editor"></div>
-    <div id="output">
-      <div class="buttons">
-        <button class="button share" id="sharebutton" href="#" onclick="shareCode()">Share via ix</button>
-        <button class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</button>
-        <button class="button run" id="runbutton" href="#" onclick="runCode()">Run!</button>
+    <div class="explanations">
+      <div>
+        <section>
+          <h1>Welcome to a tour of Nim</h1>
+          <p>In this tour we'll go through some of the different aspects of the Nim programming language so you can get to know it better.
+          If you are considering to try Nim out, but don't want to download anything, this is a great way to get a little more insight.</p>
+          <p>Throughout the tour there will be code snippets like the one you see to the right. To run these snippets you can hit the "Run!"
+          button below the code window. This will compile the code on a server, and show you the output of the compilation, along with the
+          output of your program.</p>
+          <p>The gray button next to the run button allows you to switch between the compilation output, and the execution output. When your
+          code has an error it will automatically switch to the compilation output.</p>
+          <p>But enough talking! Try to run the code snippet on the right, and hit the "Next" button below this text when you're ready for more.</p>
+        </section>
       </div>
-      <div class="content" id="logs">
+      <div class="buttons bottom">
+        <span class="info" id="info">1/5: Welcome to a tour of Nim</span>
+        <button class="button prev" id="outputButton" onclick="currentPage--;showPage();">Previous</button>
+        <button class="button next" id="runbutton" onclick="currentPage++;showPage();">Next</button>
+      </div>
+    </div>
+    <div class="code">
+      <div id="editor"></div>
+      <div id="output">
+        <div class="buttons">
+          <button class="button share" id="sharebutton" href="#" onclick="shareCode()">Share via ix</button>
+          <button class="button output" id="outputButton" href="#" onclick="switchOutput()">Showing: output</button>
+          <button class="button run" id="runbutton" href="#" onclick="runCode()">Run!</button>
+        </div>
+        <div class="content" id="logs">
+        </div>
       </div>
     </div>
   </div>
@@ -42,6 +65,7 @@
     theme: "dracula"
   });
   var urlParams;
+  var currentPage = 0;
   (window.onload = function () {
       var match,
           pl     = /\+/g,  // Regex for replacing addition symbol with a space
@@ -65,7 +89,53 @@
         xhttp.open("GET", "/ix/" + urlParams["ix"], true);
         xhttp.send(null);
       }
+      var explanations = document.getElementsByClassName("explanations")[0].children[0]
+      if(!("tour" in urlParams)) {
+        explanations.classList.remove("explanations");
+        document.getElementsByClassName("code")[0].classList.remove("code");
+      } else {
+        explanations.innerHTML = DOMPurify.sanitize("<section onload='alert(\'hello world\');'><h1>First page</h1>hello world<code>echo \"Hello world\"</code></section><section><h1>Second page</h1>Second try<code>echo \"Hello worldier\"</code></section><section><code>This only has code</code></section><section><h1>This doesn't have code</h1><p>Hello world</p></section>");
+        showPage();
+      }
   })();
+
+  function showPage() {
+    var explanations = document.getElementsByClassName("explanations")[0].children[0]
+    if (currentPage >= explanations.children.length) {
+      currentPage = explanations.children.length - 1;
+    }
+    if (currentPage < 0) {
+      currentPage = 0;
+    }
+    outputMsg = "";
+    debugMsg = "";
+    document.getElementById("info").innerText = "";
+    myCodeMirror.setValue("");
+    for (var i = 0; i < explanations.children.length; i++) {
+      var elem = explanations.children[i];
+      if(elem.nodeName != "SECTION") {
+        explanations.removeChild(elem);
+      } else {
+        if(i != currentPage) {
+          elem.style.display = "none";
+        } else {
+          elem.style.display = "block";
+          var headings = elem.getElementsByTagName("h1");
+          if (headings.length != 0) {
+            var name = headings[0].innerText;
+            document.getElementById("info").innerText = (currentPage + 1) + "/" + explanations.children.length + ": " + name;
+          } else {
+            document.getElementById("info").innerText = (currentPage + 1) + "/" + explanations.children.length + ": " + "<No title>";
+          }
+          var codeElements = elem.getElementsByTagName("code")
+          if (codeElements.length != 0) {
+            myCodeMirror.setValue(codeElements[codeElements.length - 1].innerText);
+            codeElements[codeElements.length - 1].style.display = "none";
+          }
+        }
+      }
+    }
+  }
 
   function updateURLParameter(url, param, paramVal){
       var newAdditionalURL = "";
