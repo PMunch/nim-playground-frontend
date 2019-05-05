@@ -22,27 +22,16 @@
     <a class="logo" href="https://nim-lang.org"><img src="logo.svg"/>Playground</a>
   </div>
   <div class="body">
-    <div class="explanations">
+    <div id="explanations" style="display: none">
       <div>
-        <section>
-          <h1>Welcome to a tour of Nim</h1>
-          <p>In this tour we'll go through some of the different aspects of the Nim programming language so you can get to know it better.
-          If you are considering to try Nim out, but don't want to download anything, this is a great way to get a little more insight.</p>
-          <p>Throughout the tour there will be code snippets like the one you see to the right. To run these snippets you can hit the "Run!"
-          button below the code window. This will compile the code on a server, and show you the output of the compilation, along with the
-          output of your program.</p>
-          <p>The gray button next to the run button allows you to switch between the compilation output, and the execution output. When your
-          code has an error it will automatically switch to the compilation output.</p>
-          <p>But enough talking! Try to run the code snippet on the right, and hit the "Next" button below this text when you're ready for more.</p>
-        </section>
       </div>
       <div class="buttons bottom">
-        <span class="info" id="info">1/5: Welcome to a tour of Nim</span>
+        <span class="info" id="info"></span>
         <button class="button prev" id="outputButton" onclick="currentPage--;showPage();">Previous</button>
         <button class="button next" id="runbutton" onclick="currentPage++;showPage();">Next</button>
       </div>
     </div>
-    <div class="code">
+    <div id="code">
       <div id="editor"></div>
       <div id="output">
         <div class="buttons">
@@ -66,38 +55,46 @@
   });
   var urlParams;
   var currentPage = 0;
-  (window.onload = function () {
-      var match,
-          pl     = /\+/g,  // Regex for replacing addition symbol with a space
-          search = /([^&=]+)=?([^&]*)/g,
-          decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-          query  = window.location.search.substring(1);
+  window.onload = function () {
+    console.log("onload");
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
 
-      urlParams = {};
-      while (match = search.exec(query))
-         urlParams[decode(match[1])] = decode(match[2]);
-      if("ix" in urlParams) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            outputMsg = "http://ix.io/" + urlParams["ix"] + "/nim";
-            debugMsg = "";
-            setOutput(true);
-            myCodeMirror.setValue(this.responseText);
-          }
-        };
-        xhttp.open("GET", "/ix/" + urlParams["ix"], true);
-        xhttp.send(null);
-      }
-      var explanations = document.getElementsByClassName("explanations")[0].children[0]
-      if(!("tour" in urlParams)) {
-        explanations.classList.remove("explanations");
-        document.getElementsByClassName("code")[0].classList.remove("code");
-      } else {
-        explanations.innerHTML = DOMPurify.sanitize("<section onload='alert(\'hello world\');'><h1>First page</h1>hello world<code>echo \"Hello world\"</code></section><section><h1>Second page</h1>Second try<code>echo \"Hello worldier\"</code></section><section><code>This only has code</code></section><section><h1>This doesn't have code</h1><p>Hello world</p></section>");
-        showPage();
-      }
-  })();
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+    if("ix" in urlParams) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          outputMsg = "http://ix.io/" + urlParams["ix"] + "/nim";
+          debugMsg = "";
+          setOutput(true);
+          myCodeMirror.setValue(this.responseText);
+        }
+      };
+      xhttp.open("GET", "/ix/" + urlParams["ix"], true);
+      xhttp.send(null);
+    }
+    var explanations = document.getElementById("explanations").children[0]
+    if("tour" in urlParams) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("explanations").style.display = "block";
+          document.getElementById("explanations").classList.add("explanations");
+          document.getElementById("code").classList.add("code");
+          explanations.innerHTML = DOMPurify.sanitize(this.responseText);
+          showPage();
+        }
+      };
+      xhttp.open("GET", "/tour/" + encodeURIComponent(urlParams["tour"]), true);
+      xhttp.send(null);
+    }
+  };
 
   function showPage() {
     var explanations = document.getElementsByClassName("explanations")[0].children[0]

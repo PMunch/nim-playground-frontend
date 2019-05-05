@@ -7,6 +7,7 @@
   overflow: auto;
   background-color: #171921;
   color: #fff;
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 .explanations, .code {
   position: absolute;
@@ -38,7 +39,6 @@
 }
 .content {
   padding: 20px;
-  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 .header {
   background: #171921;
