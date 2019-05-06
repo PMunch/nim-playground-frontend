@@ -175,6 +175,10 @@ div[id^=page-] {
 .info {
   float: left;
   margin: 0.5em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 80%;
 }
 
 span.hint {
