@@ -57,7 +57,6 @@
   var urlParams;
   var currentPage = 0;
   window.onload = function () {
-    console.log("onload");
     var match,
         pl     = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
@@ -127,8 +126,8 @@
           }
           var codeElements = elem.getElementsByTagName("code")
           if (codeElements.length != 0) {
-            myCodeMirror.setValue(codeElements[codeElements.length - 1].innerText);
             codeElements[codeElements.length - 1].style.display = "none";
+            myCodeMirror.setValue(codeElements[codeElements.length - 1].innerText);
           }
         }
       }
