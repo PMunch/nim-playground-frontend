@@ -9,6 +9,15 @@
   color: #fff;
   font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
+a {
+  color: #ffe953;
+}
+code {
+  background-color: #282a36;
+  color: #fff;
+  border: 2px solid #282a36;
+  border-radius: 5px;
+}
 .explanations, .code {
   position: absolute;
   top: 0;
