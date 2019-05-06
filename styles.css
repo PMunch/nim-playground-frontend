@@ -23,7 +23,7 @@ code {
   top: 0;
   bottom: 0;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 .explanations {
   border-right: 6px solid #282a36;
