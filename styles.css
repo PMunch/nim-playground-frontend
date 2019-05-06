@@ -179,6 +179,7 @@ div[id^=page-] {
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 80%;
+  text-align: left;
 }
 
 span.hint {
