@@ -32,6 +32,7 @@ code {
 }
 .explanations > div > section {
   padding: 2em;
+  padding-top: 1em;
   font-size:110%;
   color: #ddd;
 }
