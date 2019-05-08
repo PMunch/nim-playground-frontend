@@ -30,13 +30,13 @@ code {
   left: 0;
   width: 50%;
 }
-.explanations > div > section {
+section {
   padding: 2em;
   padding-top: 1em;
   font-size:110%;
   color: #ddd;
 }
-.explanations h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
   color: #ffe953;
   font-family: "Titillium Web";
   font-weight: normal;
@@ -71,10 +71,6 @@ html,
 body {
   height: 100%;
   margin: 0;
-}
-h1 {
-  margin: 0;
-  color: #fff;
 }
 div[id^=page-] > code:last-of-type {
   display: none;
