@@ -1,0 +1,190 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background-color: #171921;
+  color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffe953;
+  font-family: "Titillium Web";
+  font-weight: normal;
+}
+
+#ROOT {
+  display:flex;
+  flex-direction: column;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+.headerbar > img {
+  padding: 0.5em;
+  padding-left: 3em;
+  height: 1.5em;
+}
+
+.headerbar > span {
+  color: #ffe953;
+  font-family: "Titillium Web";
+  font-weight: normal;
+  font-size: 1.5em;
+  position: relative;
+  bottom: 0.36em;
+  padding-left: 0.5em;
+}
+
+.mainarea {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  flex-grow: 1;
+}
+
+.mainarea > .column:first-child {
+  border-right: 0.5em solid #282a36;
+}
+
+.column {
+  display:flex;
+  flex-direction:column;
+}
+
+.base {
+  flex-grow: 1;
+  flex-basis: 49%;
+}
+
+.content {
+  padding: 1.5em;
+}
+
+@media only screen and (min-width: 1300px) {
+  .base {
+    min-width: 600px;
+    max-height: 100%;
+  }
+
+  .content {
+    overflow: auto;
+  }
+}
+
+section {
+  padding: 2em;
+  padding-top: 1em;
+  font-size:110%;
+  color: #ddd;
+}
+
+a {
+  color: #ffe953;
+}
+code {
+  background-color: #282a36;
+  color: #fff;
+  border: 2px solid #282a36;
+  border-radius: 5px;
+}
+
+.grow, .small {
+  flex-grow: 1;
+}
+
+.small {
+  flex-basis: 33%;
+}
+
+.big {
+  flex-grow: 2 !important;
+  flex-basis: 66%;
+}
+
+.bar {
+  background-color: #282a36;
+  text-align: right;
+}
+
+.bar > :first-child {
+  float:left;
+}
+
+.bar > span {
+  line-height: 1.5em;
+  margin: 0.4em;
+}
+
+.monospace {
+  font-family: 'Inconsolata', monospace;
+}
+
+.CodeMirror {
+  height: 100%;
+}
+
+span.hint {
+  color: #66d9ef;
+}
+
+span.brackets {
+  color: #50fa7b;
+}
+
+span.error {
+  color: red;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.2em 0.9em;
+  line-height:1.5em;
+  margin: 0.2em;
+  text-decoration: none;
+  font-size: 1em;
+  cursor: pointer;
+  border: 0px;
+  height: 2em;
+  color: #333;
+  border-radius: 4px;
+}
+
+.button.main {
+  background: #ffe953;
+}
+
+.button.main:hover {
+  background: #ffe220;
+}
+
+.button.other {
+  background: #ccc;
+}
+
+.button.is-loading {
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.button.is-loading:after {
+  animation: spinAround 500ms infinite linear;
+  border: 2px solid #333;
+  border-radius: 290486px;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  display: block;
+  height: 1em;
+  position: relative;
+  width: 1em;
+  left: calc(50% - (1em / 2));
+  top: -1.3em;
+}
+
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(359deg); } }
