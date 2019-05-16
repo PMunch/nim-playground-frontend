@@ -44,7 +44,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-grow: 1;
 }
 
-.mainarea > .column:first-child {
+.mainarea > .column:first-child:not(:last-child) {
   border-right: 0.5em solid #282a36;
 }
 
