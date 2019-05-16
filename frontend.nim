@@ -130,7 +130,7 @@ proc runCode() =
       output = Debug
 
   let request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": "c"}
-  ajaxPost("http://localhost:5000/compile", @[], $request, cb)
+  ajaxPost("/compile", @[], $request, cb)
 
 proc shareIx() =
   awaitingShare = true
@@ -149,7 +149,7 @@ proc shareIx() =
       output = Debug
 
   let request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": "c"}
-  ajaxPost("http://localhost:5000/ix", @[], $request, cb)
+  ajaxPost("/ix", @[], $request, cb)
 
 proc loadIx(id: string) =
   proc cb(httpStatus: int, response: cstring) =
@@ -163,7 +163,7 @@ proc loadIx(id: string) =
       outputText[Output] = ""
       output = Debug
 
-  ajaxGet("http://localhost:5000/ix/" & id, @[], cb)
+  ajaxGet("/ix/" & id, @[], cb)
   loadedIx = id
 
 proc loadTour(id: string) =
@@ -180,7 +180,7 @@ proc loadTour(id: string) =
       outputText[Output] = ""
       output = Debug
 
-  ajaxGet("http://localhost:5000/tour/" & encodeUriComponent(id), @[], cb)
+  ajaxGet("/tour/" & encodeUriComponent(id), @[], cb)
   loadedTour = id
   showingTour = true
 
