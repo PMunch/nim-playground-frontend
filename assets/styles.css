@@ -21,13 +21,17 @@ h1, h2, h3, h4, h5, h6 {
   right:0;
 }
 
-.headerbar > img {
+.headerbar > a {
+  text-decoration: none;
+}
+
+.headerbar > a > img {
   padding: 0.5em;
   padding-left: 3em;
   height: 1.5em;
 }
 
-.headerbar > span {
+.headerbar > a > span {
   color: #ffe953;
   font-family: "Titillium Web";
   font-weight: normal;

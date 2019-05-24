@@ -196,8 +196,9 @@ proc createDom(data: RouterData): VNode =
         loadTour(strhash[6..^1])
   result = buildHtml(tdiv):
     headerbar:
-      img(src = "/assets/logo.svg")
-      span: text "Playground"
+      a(href = "https://play.nim-lang.org"):
+        img(src = "/assets/logo.svg")
+        span: text "Playground"
     mainarea:
       if showingTour:
         baseColumn:
