@@ -58,6 +58,8 @@ type
 proc newCodeMirror(element: Element, config: js): CodeMirror {. importcpp: "CodeMirror(@)" .}
 proc setValue(cm: CodeMirror, value: kstring) {.importcpp: "#.setValue(@)".}
 proc getValue(cm: CodeMirror): kstring {.importcpp: "#.getValue()".}
+proc setOption(cm: CodeMirror, key: kstring, value: js) {.importcpp: "#.setOption(@)".}
+proc replaceSelection(cm: CodeMirror, value: kstring) {.importcpp: "#.replaceSelection(@)".}
 proc replace(str: kstring, r: Regex, cmd: proc (x: kstring): kstring): kstring {.importcpp: "#.replace(@)".}
 proc setHash(str: kstring) {.importcpp: "window.location.hash = #".}
 proc sanitize(str: kstring): kstring {.importcpp: "DOMPurify.sanitize(#)".}
@@ -85,6 +87,10 @@ proc postRender(data: RouterData) =
       tabSize: 2,
       lineNumbers: true,
       theme: "dracula".kstring
+    })
+    myCodeMirror.setOption("extraKeys", js{
+      Tab: proc(cm: CodeMirror) =
+        cm.replaceSelection("  ")
     })
   if showingTour:
     var tourContent = kdom.getElementById("tour")
