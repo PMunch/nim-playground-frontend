@@ -228,8 +228,9 @@ proc createDom(data: RouterData): VNode =
             else:
               mainButton(class = "is-loading"):
                 text "Run!"
-          growContent(class = "monospace"):
-            verbatim outputText[output]
+          growContent:
+            pre(class = "monospace"):
+              verbatim outputText[output]
 
 setRenderer createDom, "ROOT", postRender
 setForeignNodeId "tour"
