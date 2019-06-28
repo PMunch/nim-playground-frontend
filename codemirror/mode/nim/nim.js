@@ -13,7 +13,7 @@ CodeMirror.defineMode("nim", function(conf, parserConf) {
                         'const', 'continue', 'converter',
                         'discard', 'distinct', 'do',
                         'elif', 'else', 'end', 'enum', 'except', 'export',
-                        'finally', 'for', 'from',
+                        'finally', 'for', 'from', 'func',
                         'generic',
                         'if', 'import', 'include', 'interface', 'iterator',
                         'lambda', 'let',
