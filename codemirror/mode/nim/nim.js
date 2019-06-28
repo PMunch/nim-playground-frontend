@@ -173,7 +173,7 @@ CodeMirror.defineMode("nim", function(conf, parserConf) {
 
     if (stream.match(identifiers)) {
       if (state.lastToken != null &&
-          state.lastToken.match(/proc|iterator|macro|template|class|converter/)) {
+          state.lastToken.match(/proc|iterator|macro|template|class|converter|func/)) {
         return 'def';
       }
 
