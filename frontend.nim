@@ -143,11 +143,12 @@ proc shareIx() =
   proc cb(httpStatus: int, response: cstring) =
     awaitingShare = false
     if httpStatus == 200:
-      outputText[Output] = $response
+      let ixid = ($response)[13..16]
+      outputText[Output] = "https://play.nim-lang.org/#ix=" & ixid
       outputText[Debug] = ""
       output = Output
       if not showingTour:
-        loadedIx = outputText[Output][13..16]
+        loadedIx = ixid
         setHash("#ix=" & loadedIx)
     else:
       outputText[Debug] = "No reply from server:<br/>" & $httpStatus & ": " & $response
