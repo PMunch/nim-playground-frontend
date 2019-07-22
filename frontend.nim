@@ -205,6 +205,8 @@ proc createDom(data: RouterData): VNode =
       a(href = "https://play.nim-lang.org"):
         img(src = "/assets/logo.svg")
         span: text "Playground"
+      a(href = "https://github.com/PMunch/nim-playground-frontend"):
+        span: text "Code on GitHub"
     mainarea:
       if showingTour:
         baseColumn:
