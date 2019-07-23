@@ -32,22 +32,38 @@ h1, h2, h3, h4, h5, h6 {
 .headerbar > a > img {
   padding: 0.5em;
   padding-left: 3em;
-  height: 1.5em;
+  height: 1.2em;
 }
 
 .headerbar > a > span {
-  color: gray;
+  color: lightgray;
   margin: 1em;
+  font-size:0.8em;
 }
 
 .headerbar > a:first-child > span {
   color: #ffe953;
   font-family: "Titillium Web";
   font-weight: normal;
-  font-size: 1.5em;
+  font-size: 1.2em;
   position: relative;
-  bottom: 0.36em;
-  padding-left: 0.5em;
+  bottom: 0.5em;
+}
+
+@media only screen and (min-width: 768px) {
+  .headerbar > a > img {
+    height: 1.5em;
+  }
+
+  .headerbar > a > span {
+    font-size: 1em;
+  }
+
+  .headerbar > a:first-child > span {
+    font-size: 1.5em;
+    bottom: 0.36em;
+    padding-left: 0.5em;
+  }
 }
 
 .mainarea {
