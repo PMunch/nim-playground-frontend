@@ -121,11 +121,7 @@ proc runCode() =
     if httpStatus == 200:
       let jsonResponse = parseJson($response)
       outputText[Output] = jsonResponse["log"].getStr.replace("\n", "<br/>")
-      outputText[Debug] = $(jsonResponse["compileLog"].getStr
-        .replace("\n", "<br/>")
-        .replace("Hint: ", "<span class=\"hint\">Hint: </span>")
-        .replace("Error: ", "<span class=\"error\">Error: </span>")
-        .replace("\\[[^\\]]*\\]".kstring, (x) => "<span class=\"brackets\">" & x & "</span>"))
+      outputText[Debug] = $(jsonResponse["compileLog"].getStr)
       if outputText[Output] != "<br/>":
         output = Output
       else:
