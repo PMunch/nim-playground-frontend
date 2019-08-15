@@ -131,7 +131,7 @@ proc runCode() =
       outputText[Output] = ""
       output = Debug
 
-  let request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": "c"}
+  let request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": "c", "outputFormat": "HTML"}
   ajaxPost("/compile", @[], $request, cb)
 
 proc shareIx() =
