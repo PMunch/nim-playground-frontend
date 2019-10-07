@@ -16,10 +16,10 @@ To build the frontend, first clone this repository
   
 then enter the directory and compile the frontend
   
-.. code-block:: ruby
+.. code-block::
   
   cd nim-playground-frontend
   nim js -d:release -o:./assets/frontend.js ./frontend.nim
   
   
-Finally, serve `index.html`.
+Finally, serve ``index.html``.
