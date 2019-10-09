@@ -215,8 +215,8 @@ span.error {
   top: -1.3em;
 }
 
-button .hint {
-  text-size: smaller;
+button .buttonhint {
+  font-size: smaller;
   opacity: 0.7;
 }
 

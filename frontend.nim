@@ -236,7 +236,7 @@ proc createDom(data: RouterData): VNode =
             if not runningCode:
               mainButton(onclick = runCode):
                 text "Run!"
-                span(class = "hint"):
+                span(class = "buttonhint"):
                   text "(ctrl-enter)"
             else:
               mainButton(class = "is-loading"):
