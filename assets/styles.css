@@ -215,6 +215,11 @@ span.error {
   top: -1.3em;
 }
 
+button .hint {
+  text-size: smaller;
+  opacity: 0.7;
+}
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }

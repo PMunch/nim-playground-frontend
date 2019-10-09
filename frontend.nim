@@ -235,10 +235,12 @@ proc createDom(data: RouterData): VNode =
               text "Showing: " & $output
             if not runningCode:
               mainButton(onclick = runCode):
-                text "Run! (ctrl-enter)"
+                text "Run!"
+                span(class = "hint"):
+                  text "(ctrl-enter)"
             else:
               mainButton(class = "is-loading"):
-                text "Run! (ctrl-enter)"
+                text "Run!"
           growContent:
             pre(class = "monospace"):
               verbatim outputText[output]
