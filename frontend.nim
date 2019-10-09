@@ -86,6 +86,7 @@ proc switchOutput() =
 
 proc runCode() =
   runningCode = true
+  kxi.redraw()
   proc cb(httpStatus: int, response: cstring) =
     runningCode = false
     if httpStatus == 200:
