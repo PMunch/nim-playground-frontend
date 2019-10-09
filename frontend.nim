@@ -79,36 +79,6 @@ var
   tourContent = buildHtml:
     text "Loading tour..."
 
-proc postRender(data: RouterData) =
-  if myCodeMirror.Element == nil:
-    myCodeMirror = newCodeMirror(kdom.getElementById("editor"), js{
-      mode: "nim".kstring,
-      value: "".kstring,
-      tabSize: 2,
-      lineNumbers: true,
-      theme: "dracula".kstring
-    })
-    myCodeMirror.setOption("extraKeys", js{
-      Tab: proc(cm: CodeMirror) =
-        cm.replaceSelection("  ")
-    })
-  if showingTour:
-    var tourContent = kdom.getElementById("tour")
-    let sections = tourContent.getElementsByTagName("section")
-    totalSections = sections.len
-    for idx, section in sections:
-      if idx != currentSection:
-        section.style.display = "none"
-      else:
-        section.style.display = "block"
-        let
-          headers = section.getElementsByTagName("h1")
-          codes = section.getElementsByTagName("code")
-        kdom.getElementById("sectionTitle").innerHtml = $(currentSection + 1) & "/" & $totalSections & ": " & (if headers.len > 0: $headers[0].innerHtml else: "No title")
-        if codes.len > 0:
-          myCodeMirror.setValue(codes[^1].innerHtml)
-          codes[^1].style.display = "none"
-
 proc switchOutput() =
   output = case output:
     of Debug: Output
@@ -187,6 +157,42 @@ proc loadTour(id: string) =
   loadedTour = id
   showingTour = true
 
+proc postRender(data: RouterData) =
+  if myCodeMirror.Element == nil:
+    myCodeMirror = newCodeMirror(kdom.getElementById("editor"), js{
+      mode: "nim".kstring,
+      value: "".kstring,
+      tabSize: 2,
+      lineNumbers: true,
+      theme: "dracula".kstring
+    })
+    myCodeMirror.setOption("extraKeys", js{
+      Tab: proc(cm: CodeMirror) =
+        cm.replaceSelection("  ")
+      ,
+      "Ctrl-Enter": proc(cm: CodeMirror) =
+        if (not runningCode): runCode()
+      ,
+      "Cmd-Enter": proc(cm: CodeMirror) =
+        if (not runningCode): runCode()
+    })
+  if showingTour:
+    var tourContent = kdom.getElementById("tour")
+    let sections = tourContent.getElementsByTagName("section")
+    totalSections = sections.len
+    for idx, section in sections:
+      if idx != currentSection:
+        section.style.display = "none"
+      else:
+        section.style.display = "block"
+        let
+          headers = section.getElementsByTagName("h1")
+          codes = section.getElementsByTagName("code")
+        kdom.getElementById("sectionTitle").innerHtml = $(currentSection + 1) & "/" & $totalSections & ": " & (if headers.len > 0: $headers[0].innerHtml else: "No title")
+        if codes.len > 0:
+          myCodeMirror.setValue(codes[^1].innerHtml)
+          codes[^1].style.display = "none"
+
 proc createDom(data: RouterData): VNode =
   let strhash = $data.hashPart
   if strhash.len > "#ix=".len:
@@ -229,10 +235,10 @@ proc createDom(data: RouterData): VNode =
               text "Showing: " & $output
             if not runningCode:
               mainButton(onclick = runCode):
-                text "Run!"
+                text "Run! (ctrl-enter)"
             else:
               mainButton(class = "is-loading"):
-                text "Run!"
+                text "Run! (ctrl-enter)"
           growContent:
             pre(class = "monospace"):
               verbatim outputText[output]
