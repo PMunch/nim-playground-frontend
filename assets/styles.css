@@ -64,7 +64,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .optionsbar > input[type=number] {
-  width: 2em;
+  width: 3em;
 }
 
 .optionsbar > select, input[type=number] {
@@ -181,6 +181,10 @@ code, pre {
 .monospace {
   font-family: 'Inconsolata', monospace;
   border: inherit;
+  background-color: inherit;
+}
+
+.editor {
   background-color: #282a36;
 }
 

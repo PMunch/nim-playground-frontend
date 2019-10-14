@@ -104,8 +104,8 @@ proc runCode() =
       output = Debug
 
   let
-    compilationTarget = kdom.getElementById("compilationtarget")
-    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget.value, "outputFormat": "HTML"}
+    compilationTarget = if kdom.getElementById("compilationtarget").value == "C": "c" else: "cpp"
+    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "HTML"}
   ajaxPost("/compile", @[], $request, cb)
 
 proc shareIx() =
