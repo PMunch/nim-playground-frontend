@@ -48,6 +48,7 @@ createAliases("tdiv"):
   "bar"
   "big editor"
   "small column"
+  "optionsbar"
 
 type
   CodeMirror = distinct Element
@@ -102,7 +103,9 @@ proc runCode() =
       outputText[Output] = ""
       output = Debug
 
-  let request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": "c", "outputFormat": "HTML"}
+  let
+    compilationTarget = kdom.getElementById("compilationtarget")
+    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget.value, "outputFormat": "HTML"}
   ajaxPost("/compile", @[], $request, cb)
 
 proc shareIx() =
@@ -194,6 +197,13 @@ proc postRender(data: RouterData) =
           myCodeMirror.setValue(codes[^1].innerHtml)
           codes[^1].style.display = "none"
 
+proc changeFontSize() =
+  let
+    editor = kdom.getElementById("editor")
+    fontSizeInput = kdom.getElementById("fontsize")
+  editor.applyStyle(style(fontSize, fontSizeInput.value & "px"))
+
+
 proc createDom(data: RouterData): VNode =
   let strhash = $data.hashPart
   if strhash.len > "#ix=".len:
@@ -223,7 +233,16 @@ proc createDom(data: RouterData): VNode =
             mainButton(onclick = () => (currentSection = min(currentSection + 1, totalSections - 1))):
               text "Next"
       baseColumn:
-        bigEditor(id = "editor", class = "monospace")
+        bigEditor(id = "editor", class = "monospace"):
+          optionsBar:
+            text "Font size: "
+            input(`type` = "number", id = "fontsize", value = "13", onchange = changeFontSize)
+            text " Compilation target: "
+            select(id = "compilationtarget"):
+              option:
+                text "C"
+              option:
+                text "C++"
         smallColumn:
           bar:
             if not awaitingShare:

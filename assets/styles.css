@@ -21,6 +21,10 @@ h1, h2, h3, h4, h5, h6 {
   right:0;
 }
 
+.headerbar {
+  height: 2.4em;
+}
+
 .headerbar > a {
   text-decoration: none;
 }
@@ -50,7 +54,30 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0.5em;
 }
 
+.optionsbar {
+  position: absolute;
+  top: 2.4em;
+  right: 0px;
+  height: 24px;
+  margin-right: 1em;
+  font-size: 16px;
+}
+
+.optionsbar > input[type=number] {
+  width: 2em;
+}
+
+.optionsbar > select, input[type=number] {
+  background-color: #ccc;
+  border-radius: 3px;
+  border: 3px solid #ccc;
+}
+
 @media only screen and (min-width: 768px) {
+  .headerbar {
+    height: 2.8em;
+  }
+
   .headerbar > a > img {
     height: 1.5em;
   }
@@ -63,6 +90,10 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.5em;
     bottom: 0.36em;
     padding-left: 0.5em;
+  }
+
+  .optionsbar {
+    top: 2.8em;
   }
 }
 
@@ -150,11 +181,12 @@ code, pre {
 .monospace {
   font-family: 'Inconsolata', monospace;
   border: inherit;
-  background-color: inherit;
+  background-color: #282a36;
 }
 
 .CodeMirror {
   height: 100%;
+  margin-top: 24px;
 }
 
 span.hint {
