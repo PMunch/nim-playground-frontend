@@ -245,7 +245,7 @@ proc createDom(data: RouterData): VNode =
           optionsBar:
             span:
               text "Font size: "
-              input(`type` = "number", id = "fontsize", value = "13", onchange = changeFontSize)
+              input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "2", required = "required", onchange = changeFontSize)
             span:
               text " Compilation target: "
               select(id = "compilationtarget"):
