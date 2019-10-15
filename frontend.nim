@@ -79,6 +79,7 @@ var
   totalSections = 0
   tourContent = buildHtml:
     text "Loading tour..."
+  knownVersions = @["latest"]
 
 proc switchOutput() =
   output = case output:
@@ -105,7 +106,8 @@ proc runCode() =
 
   let
     compilationTarget = if kdom.getElementById("compilationtarget").value == "C": "c" else: "cpp"
-    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "HTML"}
+    nimversion = $kdom.getElementById("nimversion").value
+    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "HTML", "version": nimversion}
   ajaxPost("/compile", @[], $request, cb)
 
 proc shareIx() =
@@ -162,6 +164,12 @@ proc loadTour(id: string) =
   showingTour = true
 
 proc postRender(data: RouterData) =
+  if knownVersions.len == 1:
+    proc cb(httpStatus: int, response: cstring) =
+      if httpStatus == 200:
+        for version in parseJson($response)["versions"].getElems:
+          knownVersions.add version.getStr
+    ajaxGet("/versions", @[], cb)
   if myCodeMirror.Element == nil:
     myCodeMirror = newCodeMirror(kdom.getElementById("editor"), js{
       mode: "nim".kstring,
@@ -243,6 +251,11 @@ proc createDom(data: RouterData): VNode =
                 text "C"
               option:
                 text "C++"
+            text " Nim version: "
+            select(id = "nimversion"):
+              for version in knownVersions:
+                option:
+                  text version
         smallColumn:
           bar:
             if not awaitingShare:
