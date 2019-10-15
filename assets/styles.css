@@ -107,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media only screen and (min-width: 560px) {
+@media only screen and (min-width: 574px) {
   .optionsbar {
     height: 24px;
   }
@@ -118,7 +118,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media only screen and (min-width: 385px) and (max-width: 560px) {
+@media only screen and (min-width: 385px) and (max-width: 574px) {
   .optionsbar {
     height: 24px;
   }
