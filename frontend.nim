@@ -243,19 +243,22 @@ proc createDom(data: RouterData): VNode =
       baseColumn:
         bigEditor(id = "editor", class = "monospace"):
           optionsBar:
-            text "Font size: "
-            input(`type` = "number", id = "fontsize", value = "13", onchange = changeFontSize)
-            text " Compilation target: "
-            select(id = "compilationtarget"):
-              option:
-                text "C"
-              option:
-                text "C++"
-            text " Nim version: "
-            select(id = "nimversion"):
-              for version in knownVersions:
+            span:
+              text "Font size: "
+              input(`type` = "number", id = "fontsize", value = "13", onchange = changeFontSize)
+            span:
+              text " Compilation target: "
+              select(id = "compilationtarget"):
                 option:
-                  text version
+                  text "C"
+                option:
+                  text "C++"
+            span:
+              text " Nim version: "
+              select(id = "nimversion"):
+                for version in knownVersions:
+                  option:
+                    text version
         smallColumn:
           bar:
             if not awaitingShare:

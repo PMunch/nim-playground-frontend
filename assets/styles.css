@@ -58,19 +58,29 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 2.4em;
   right: 0px;
-  height: 24px;
+  height: 48px;
   margin-right: 1em;
   font-size: 16px;
 }
 
-.optionsbar > input[type=number] {
+.optionsbar input[type=number] {
   width: 3em;
 }
 
-.optionsbar > select, input[type=number] {
+.optionsbar select, input[type=number] {
   background-color: #ccc;
   border-radius: 3px;
   border: 3px solid #ccc;
+}
+
+.optionsbar > span {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+.CodeMirror {
+  height: calc(100% - 72px);
+  margin-top: 72px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -94,6 +104,28 @@ h1, h2, h3, h4, h5, h6 {
 
   .optionsbar {
     top: 2.8em;
+  }
+}
+
+@media only screen and (min-width: 560px) {
+  .optionsbar {
+    height: 24px;
+  }
+
+  .CodeMirror {
+    height: calc(100% - 24px);
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width: 385px) and (max-width: 560px) {
+  .optionsbar {
+    height: 24px;
+  }
+
+  .CodeMirror {
+    height: calc(100% - 48px);
+    margin-top: 48px;
   }
 }
 
@@ -186,11 +218,6 @@ code, pre {
 
 .editor {
   background-color: #282a36;
-}
-
-.CodeMirror {
-  height: calc(100% - 24px);
-  margin-top: 24px;
 }
 
 span.hint {
