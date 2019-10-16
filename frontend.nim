@@ -53,10 +53,34 @@ createAliases("tdiv"):
 type
   CodeMirror = distinct Element
   OutputKind = enum
-    Debug = "debug", Output = "output"
+    Debug = "Debug", Output = "Output"
   Regex = ref object of RootObj
+  CompilerTargets = enum ## Compiler Backend Targets
+    cTarget = "c "
+    cppTarget = "cpp "
+    jsTarget = "js "
+    objcTarget = "objc "
+    nodejsTarget = "js -d:nodejs "
+    checkTarget = "check "
+  CompilerModes = enum ## Compiler Backend Modes
+    debugMode = ""
+    releaseMode = "-d:release "
+    dangerReleaseMode = "-d:release -d:danger "
+  GarbageCollectors = enum ## Garbage Collectors
+    defaultGc = ""
+    goGc = "--gc:go "
+    boehmGc = "--gc:bohem "
+    markAndSweepGc = "--gc:markAndSweep "
+    noneGc = "--gc:none "
+    regionsGc = "--gc:regions "
+    destructorsGc = "--newruntime "
+  StyleCheckings = enum ## Style Checks
+    styleCheckOff = ""
+    styleCheckHint = "--styleCheck:hint "
+    styleCheckError = "--styleCheck:error "
 
-proc newCodeMirror(element: Element, config: js): CodeMirror {. importcpp: "CodeMirror(@)" .}
+
+proc newCodeMirror(element: Element, config: js): CodeMirror {.importcpp: "CodeMirror(@)".}
 proc setValue(cm: CodeMirror, value: kstring) {.importcpp: "#.setValue(@)".}
 proc getValue(cm: CodeMirror): kstring {.importcpp: "#.getValue()".}
 proc setOption(cm: CodeMirror, key: kstring, value: js) {.importcpp: "#.setOption(@)".}
@@ -105,7 +129,12 @@ proc runCode() =
       output = Debug
 
   let
-    compilationTarget = if kdom.getElementById("compilationtarget").value == "C": "c" else: "cpp"
+    compilationTarget = (
+      $kdom.getElementById("compilationtarget").value &
+      $kdom.getElementById("compilationmode").value &
+      $kdom.getElementById("garbagecollector").value &
+      $kdom.getElementById("stylecheck").value
+    )
     nimversion = $kdom.getElementById("nimversion").value
     request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "HTML", "version": nimversion}
   ajaxPost("/compile", @[], $request, cb)
@@ -244,31 +273,85 @@ proc createDom(data: RouterData): VNode =
         bigEditor(id = "editor", class = "monospace"):
           optionsBar:
             span:
-              text "Font size: "
-              input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "2", required = "required", onchange = changeFontSize)
+              text "Font size:"
+              input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "2", required = "required", maxlenght = "2", onchange = changeFontSize)
             span:
-              text " Compilation target: "
-              select(id = "compilationtarget"):
-                option:
-                  text "C"
-                option:
-                  text "C++"
-            span:
-              text " Nim version: "
-              select(id = "nimversion"):
+              text " Version:"
+              select(id = "nimversion", title = "Nim version"):
                 for version in knownVersions:
                   option:
                     text version
+            span:
+              a(href = "https://nim-lang.org/docs/backends.html#introduction", target = "_blank", title = "Compiler Target"):
+                text " Target:"
+              select(id = "compilationtarget", title = "Compiler Target"):
+                optgroup(label = "Backend"):
+                  option(value = $cTarget):
+                    text "C"
+                  option(value = $cppTarget):
+                    text "C++"
+                  option(value = $nodejsTarget):
+                    text "NodeJS"
+                  option(value = $objcTarget):
+                    text "ObjectiveC"
+                  option(disabled = "disabled"):
+                    text "NimScript"
+                optgroup(label = "Frontend"):
+                  option(value = $jsTarget):
+                    text "JavaScript"
+                optgroup(label = "Diagnostics"):
+                  option(value = $checkTarget):
+                    text "Check only"
+            span:
+              a(href = "https://nim-lang.org/docs/nimc.html#additional-compilation-switches", target = "_blank", title = "Optimization level"):
+                text " Mode:"
+              select(id = "compilationmode", title = "Optimization level"):
+                option(value = $debugMode):
+                  text "Debug"
+                option(value = $releaseMode):
+                  text "Release"
+                optgroup(label = "Advanced"):
+                  option(value = $dangerReleaseMode):
+                    text "Danger"
+            span:
+              a(href = "https://nim-lang.org/docs/gc.html", target = "_blank", title = "Memory management"):
+                text " Garbage collector:"
+              select(id = "garbagecollector", title = "Memory management"):
+                option(value = $defaultGc):
+                  text "Default"
+                option(value = $boehmGc):
+                  text "Boehm"
+                option(value = $markAndSweepGc):
+                  text "Mark&Sweep"
+                option(value = $goGc):
+                  text "Go lang"
+                optgroup(label = "Advanced"):
+                  option(value = $noneGc):
+                    text "None"
+                  option(value = $boehmGc):
+                    text "Regions"
+                  option(value = $destructorsGc):
+                    text "Destructor"
+            span:
+              a(href = "https://nim-lang.org/docs/nep1.html#introduction", target = "_blank", title = "Code style"):
+                text " Style:"
+              select(id = "stylecheck", title = "Code style"):
+                option(value = $styleCheckOff):
+                  text "Off"
+                option(value = $styleCheckHint):
+                  text "Hints"
+                option(value = $styleCheckError):
+                  text "Errors"
         smallColumn:
           bar:
             if not awaitingShare:
               otherButton(onclick = shareIx):
-                text "Share to ix"
+                text "Share link"
             else:
               otherButton(class = "is-loading"):
-                text "Share to ix"
+                text "Share link"
             otherButton(onclick = switchOutput):
-              text "Showing: " & $output
+              text "Show: " & $output
             if not runningCode:
               mainButton(onclick = runCode):
                 text "Run!"
