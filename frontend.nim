@@ -75,6 +75,7 @@ var
   loadedIx = ""
   showingTour = false
   loadedTour = ""
+  codeCurrentSection = -1
   currentSection = 0
   totalSections = 0
   tourContent = buildHtml:
@@ -201,7 +202,8 @@ proc postRender(data: RouterData) =
           headers = section.getElementsByTagName("h1")
           codes = section.getElementsByTagName("code")
         kdom.getElementById("sectionTitle").innerHtml = $(currentSection + 1) & "/" & $totalSections & ": " & (if headers.len > 0: $headers[0].innerHtml else: "No title")
-        if codes.len > 0:
+        if codes.len > 0 and codeCurrentSection != currentSection:
+          codeCurrentSection = currentSection
           myCodeMirror.setValue(codes[^1].innerHtml)
           codes[^1].style.display = "none"
 
