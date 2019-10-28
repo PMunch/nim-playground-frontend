@@ -255,11 +255,32 @@ proc createDom(data: RouterData): VNode =
         loadTour(strhash[6..^1])
   result = buildHtml(tdiv):
     headerbar:
-      a(href = "https://play.nim-lang.org"):
-        img(src = "/assets/logo.svg")
-        span: text "Playground"
-      a(href = "https://github.com/PMunch/nim-playground-frontend"):
-        span: text "Code on GitHub"
+      nav(class = "navbar"):
+        tdiv(class = "container"):
+          tdiv(class = "navbar-brand"):
+            a(class = "navbar-item", href = "https://play.nim-lang.org", target = "_blank"):
+              img(src = "/assets/logo.svg"):
+                span: text "Playground"
+          tdiv(class = "navbar-menu"):
+            tdiv(class = "navbar-start"):
+              tdiv(class = "navbar-item has-dropdown is-hoverable"):
+                a(class = "navbar-link"):
+                  text "Help"
+                tdiv(class = "navbar-dropdown"):
+                  a(class = "navbar-item navbar-item-dropdown", href = "https://nim-lang.org/install.html", target = "_blank"):
+                    text "Download"
+                  a(class = "navbar-item navbar-item-dropdown", href = "https://nim-lang.org/learn.html", target = "_blank"):
+                    text "Learn"
+                  a(class = "navbar-item navbar-item-dropdown", href = "https://nim-lang.org/documentation.html", target = "_blank"):
+                    text "Documentation"
+                  a(class = "navbar-item navbar-item-dropdown", href = "https://forum.nim-lang.org", target = "_blank"):
+                    text "Forum"
+                  a(class = "navbar-item navbar-item-dropdown", href = "https://nim-lang.org/community.html", target = "_blank"):
+                    text "Chat"
+            tdiv(class = "navbar-end"):
+              tdiv(class = "navbar-item"):
+                a(href = "https://github.com/PMunch/nim-playground-frontend", target = "_blank", title = "Code on GitHub"):
+                  span: text "Source"
     mainarea:
       if showingTour:
         baseColumn:
@@ -273,98 +294,135 @@ proc createDom(data: RouterData): VNode =
               text "Next"
       baseColumn:
         bigEditor(id = "editor", class = "monospace"):
-          optionsBar:
-            span:
-              text "Font size:"
-              input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "2", required = "required", maxlenght = "2", onchange = changeFontSize)
-            span:
-              text " Version:"
-              select(id = "nimversion", title = "Nim version"):
-                for version in knownVersions:
-                  option:
-                    text version
-            span:
-              a(href = "https://nim-lang.org/docs/backends.html#introduction", target = "_blank", title = "Compiler Target"):
-                text " Target:"
-              select(id = "compilationtarget", title = "Compiler Target"):
-                optgroup(label = "Backend"):
-                  option(value = $cTarget):
-                    text "C"
-                  option(value = $cppTarget):
-                    text "C++"
-                  option(value = $nodejsTarget):
-                    text "NodeJS"
-                  option(value = $objcTarget):
-                    text "ObjectiveC"
-                  option(disabled = "disabled"):
-                    text "NimScript"
-                optgroup(label = "Frontend"):
-                  option(value = $jsTarget):
-                    text "JavaScript"
-                optgroup(label = "Diagnostics"):
-                  option(value = $checkTarget):
-                    text "Check only"
-            span:
-              a(href = "https://nim-lang.org/docs/nimc.html#additional-compilation-switches", target = "_blank", title = "Optimization level"):
-                text " Mode:"
-              select(id = "compilationmode", title = "Optimization level"):
-                option(value = $debugMode):
-                  text "Debug"
-                option(value = $releaseMode):
-                  text "Release"
-                optgroup(label = "Advanced"):
-                  option(value = $dangerReleaseMode):
-                    text "Danger"
-            span:
-              a(href = "https://nim-lang.org/docs/gc.html", target = "_blank", title = "Memory management"):
-                text " Garbage collector:"
-              select(id = "garbagecollector", title = "Memory management"):
-                option(value = $defaultGc):
-                  text "Default"
-                option(value = $boehmGc):
-                  text "Boehm"
-                option(value = $markAndSweepGc):
-                  text "Mark&Sweep"
-                option(value = $goGc):
-                  text "Go lang"
-                optgroup(label = "Advanced"):
-                  option(value = $noneGc):
-                    text "None"
-                  option(value = $boehmGc):
-                    text "Regions"
-                  option(value = $destructorsGc):
-                    text "Destructor"
-            span:
-              a(href = "https://nim-lang.org/docs/nep1.html#introduction", target = "_blank", title = "Code style"):
-                text " Style:"
-              select(id = "stylecheck", title = "Code style"):
-                option(value = $styleCheckOff):
-                  text "Off"
-                option(value = $styleCheckHint):
-                  text "Hints"
-                option(value = $styleCheckError):
-                  text "Errors"
+          tdiv()
         smallColumn:
           bar:
             if not awaitingShare:
-              otherButton(onclick = shareIx):
+              otherButton(class = "button is-light", onclick = shareIx):
                 text "Share link"
             else:
-              otherButton(class = "is-loading"):
+              otherButton(class = "button is-light is-loading"):
                 text "Share link"
-            otherButton(onclick = switchOutput):
-              text "Show: " & $output
             if not runningCode:
-              mainButton(onclick = runCode):
-                text "Run!"
+              mainButton(class = "button is-light", onclick = runCode):
+                strong():
+                  text "Run!"
                 span(class = "buttonhint"):
                   text "(ctrl-enter)"
             else:
-              mainButton(class = "is-loading"):
+              mainButton(class = "button is-light is-loading"):
                 text "Run!"
           growContent:
             pre(class = "monospace"):
               verbatim outputText[output]
+    footer(class = "footer is-paddingless has-text-centered"):
+      details(class = "container is-fullwidth", `open` = "open"):
+        summary(class = "is-black"):
+          text "Options"
+        tdiv(class = "columns"):
+          tdiv(class = "column"):
+            text " Version:"
+            tdiv():
+              tdiv(class = "select is-small"):
+                select(id = "nimversion", title = "Nim version"):
+                  for version in knownVersions:
+                    option:
+                      text version
+          tdiv(class = "column"):
+            text "Font size:"
+            tdiv(class = "is-small"):
+              input(`type` = "number", id = "fontsize", list = "defaultNumbers", value = "13", `min` = "10", `max` = "50", step = "5", required = "required", maxlenght = "2", class = "select is-small", onchange = changeFontSize)
+              datalist(id = "defaultNumbers"):
+                option(value = "10")
+                option(value = "20")
+                option(value = "30")
+                option(value = "40")
+                option(value = "50")
+          tdiv(class = "column"):
+            a(href = "https://nim-lang.org/docs/backends.html#introduction", target = "_blank", title = "Compiler Target"):
+              text " Target:"
+            tdiv():
+              tdiv(class = "select is-small"):
+                select(id = "compilationtarget", title = "Compiler Target", class = "select"):
+                  optgroup(label = "Backend"):
+                    option(value = $cTarget):
+                      text "C"
+                    option(value = $cppTarget):
+                      text "C++"
+                    option(value = $nodejsTarget):
+                      text "NodeJS"
+                    option(value = $objcTarget):
+                      text "ObjectiveC"
+                    option(disabled = "disabled"):
+                      text "NimScript"
+                    option(disabled = "disabled"):
+                      text "LLVM IR"
+                  optgroup(label = "Frontend"):
+                    option(value = $jsTarget):
+                      text "JavaScript"
+                    option(disabled = "disabled"):
+                      text "WebAssembly"
+                  optgroup(label = "Diagnostics"):
+                    option(value = $checkTarget):
+                      text "Check only"
+          tdiv(class = "column"):
+            a(href = "https://nim-lang.org/docs/nimc.html#additional-compilation-switches", target = "_blank", title = "Optimization level"):
+              text " Mode:"
+            tdiv():
+              tdiv(class = "select is-small"):
+                select(id = "compilationmode", title = "Optimization level", class = "select"):
+                  option(value = $debugMode):
+                    text "Debug"
+                  option(value = $releaseMode):
+                    text "Release"
+                  optgroup(label = "Advanced"):
+                    option(value = $dangerReleaseMode):
+                      text "Danger"
+          tdiv(class = "column"):
+            a(href = "https://nim-lang.org/docs/gc.html", target = "_blank", title = "Memory management"):
+              text " Garbage collector:"
+            tdiv():
+              tdiv(class = "select is-small"):
+                select(id = "garbagecollector", title = "Memory management", class = "select"):
+                  option(value = $defaultGc):
+                    text "Default"
+                  option(value = $boehmGc):
+                    text "Boehm"
+                  option(value = $markAndSweepGc):
+                    text "Mark&Sweep"
+                  option(value = $goGc):
+                    text "Go lang"
+                  optgroup(label = "Advanced"):
+                    option(value = $noneGc):
+                      text "None"
+                    option(value = $boehmGc):
+                      text "Regions"
+                    option(value = $destructorsGc):
+                      text "Destructor"
+          tdiv(class = "column"):
+            a(href = "https://nim-lang.org/docs/nep1.html#introduction", target = "_blank", title = "Code style"):
+              text " Style:"
+            tdiv():
+              tdiv(class = "select is-small"):
+                select(id = "stylecheck", title = "Code style", class = "select"):
+                  option(value = $styleCheckOff):
+                    text "Off"
+                  option(value = $styleCheckHint):
+                    text "Hints"
+                  optgroup(label = "Advanced"):
+                    option(value = $styleCheckError):
+                      text "Errors"
+          tdiv(class = "column"):
+            text "Show:"
+            tdiv():
+              tdiv(class = "select is-small"):
+                  select(class = "select", onclick = switchOutput):
+                    option(value = $styleCheckOff):
+                      text "Output"
+                    option(value = $styleCheckHint):
+                      text "Debug"
+        tdiv()
+
 
 setRenderer createDom, "ROOT", postRender
 setForeignNodeId "tour"
