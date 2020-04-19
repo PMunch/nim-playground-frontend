@@ -21,7 +21,7 @@ CodeMirror.defineMode("nim", function(conf, parserConf) {
                         'proc', 'ptr',
                         'raise', 'ref', 'return',
                         'shared', 'static',
-                        'try', 'tuple', 'type',
+                        'template', 'try', 'tuple', 'type',
                         'using',
                         'var',
                         'when', 'while', 'with', 'without',
