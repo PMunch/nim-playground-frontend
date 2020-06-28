@@ -196,6 +196,8 @@ code, pre {
 }
 
 .bar {
+  position: absolute;
+  width: 100%;
   background-color: #282a36;
   text-align: right;
 }
