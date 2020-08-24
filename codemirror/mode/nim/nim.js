@@ -29,7 +29,7 @@ CodeMirror.defineMode("nim", function(conf, parserConf) {
 
                         // keyword operators
                         'shl', 'shr', 'and', 'or', 'xor', 'not',
-                        'div', 'mod', 'is', 'isnot', 'in', 'as', 'of'];
+                        'div', 'mod', 'is', 'isnot', 'in', 'notin', 'as', 'of'];
 
   var commonBuiltins = ["int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16",
                         "uint32", "uint64", "float", "float32", "float64", "bool", "char",
