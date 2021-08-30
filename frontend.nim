@@ -109,7 +109,7 @@ proc runCode() =
   let
     compilationTarget = if kdom.getElementById("compilationtarget").value == "C": "c" else: "cpp"
     nimversion = $kdom.getElementById("nimversion").value
-    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "HTML", "version": nimversion}
+    request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "html", "version": nimversion}
   ajaxPost("/compile", @[], $request, cb)
 
 proc shareIx() =
@@ -281,7 +281,7 @@ proc createDom(data: RouterData): VNode =
               text "Run!"
         content2(id = "output"):
           pre(class = "monospace"):
-            verbatim outputText[output]      
+            verbatim outputText[output]
 
 setRenderer createDom, "ROOT", postRender
 setForeignNodeId "tour"
