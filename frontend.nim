@@ -49,6 +49,7 @@ createAliases("tdiv"):
   "big editor"
   "small column"
   "optionsbar"
+  "content2"
 
 type
   CodeMirror = distinct Element
@@ -261,27 +262,26 @@ proc createDom(data: RouterData): VNode =
                 for version in knownVersions:
                   option:
                     text version
-        smallColumn:
-          bar:
-            if not awaitingShare:
-              otherButton(onclick = shareIx):
-                text "Share to ix"
-            else:
-              otherButton(class = "is-loading"):
-                text "Share to ix"
-            otherButton(onclick = switchOutput):
-              text "Showing: " & $output
-            if not runningCode:
-              mainButton(onclick = runCode):
-                text "Run!"
-                span(class = "buttonhint"):
-                  text "(ctrl-enter)"
-            else:
-              mainButton(class = "is-loading"):
-                text "Run!"
-          growContent:
-            pre(class = "monospace"):
-              verbatim outputText[output]
+        bar:
+          if not awaitingShare:
+            otherButton(onclick = shareIx):
+              text "Share to ix"
+          else:
+            otherButton(class = "is-loading"):
+              text "Share to ix"
+          otherButton(onclick = switchOutput):
+            text "Showing: " & $output
+          if not runningCode:
+            mainButton(onclick = runCode):
+              text "Run!"
+              span(class = "buttonhint"):
+                text "(ctrl-enter)"
+          else:
+            mainButton(class = "is-loading"):
+              text "Run!"
+        content2(id = "output"):
+          pre(class = "monospace"):
+            verbatim outputText[output]      
 
 setRenderer createDom, "ROOT", postRender
 setForeignNodeId "tour"

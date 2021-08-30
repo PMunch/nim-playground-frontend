@@ -1,3 +1,9 @@
+:root {
+  --editor-height: calc(100vh - 350px);
+  --editor-height-2: calc(100vh - 385px);
+  --output-height: 10vh;
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
@@ -78,8 +84,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 0.5em;
 }
 
+#editor {
+  max-height: var(--editor-height);
+}
+
 .CodeMirror {
-  height: calc(100% - 72px);
+  max-height: var(--editor-height-2);
   margin-top: 72px;
 }
 
@@ -152,6 +162,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .content {
   padding: 1.5em;
+}
+
+.content2 {
+  margin: 1.5em
 }
 
 @media only screen and (min-width: 1300px) {
@@ -287,3 +301,9 @@ button .buttonhint {
     transform: rotate(0deg); }
   to {
     transform: rotate(359deg); } }
+
+#output {
+  height: var(--output-height);
+  overflow-y: auto;
+  flex-grow: 1;
+}
