@@ -1,6 +1,6 @@
 :root {
   --editor-height: calc(100vh - 350px);
-  --editor-height-2: calc(100vh - 385px);
+  --editor-height-2: calc(100vh - 360px);
   --output-height: 10vh;
 }
 
@@ -29,6 +29,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .headerbar {
   height: 2.4em;
+  display: flex;
+  flex-direction: row;
 }
 
 .headerbar > a {
@@ -61,12 +63,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .optionsbar {
-  position: absolute;
-  top: 2.4em;
-  right: 0px;
   height: 48px;
   margin-right: 1em;
   font-size: 16px;
+  align-self: center;
+  padding: 20px;
 }
 
 .optionsbar input[type=number] {
@@ -124,7 +125,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .CodeMirror {
     height: calc(100% - 24px);
-    margin-top: 24px;
+    margin-top: 10px;
   }
 }
 
@@ -306,4 +307,9 @@ button .buttonhint {
   height: var(--output-height);
   overflow-y: auto;
   flex-grow: 1;
+}
+
+#githublink {
+  align-self: center;
+  margin-left: auto;
 }
