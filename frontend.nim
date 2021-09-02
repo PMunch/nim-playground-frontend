@@ -49,7 +49,6 @@ createAliases("tdiv"):
   "big editor"
   "small column"
   "optionsbar"
-  "content2"
 
 type
   CodeMirror = distinct Element
@@ -229,26 +228,9 @@ proc createDom(data: RouterData): VNode =
     headerbar:
       a(href = "https://play.nim-lang.org"):
         img(src = "/assets/logo.svg")
-        span: text "Playground"
-      optionsBar:
-        span:
-          text "Font size: "
-          input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "1", required = "required", onchange = changeFontSize)
-        span:
-          text " Compilation target: "
-          select(id = "compilationtarget"):
-            option:
-              text "C"
-            option:
-              text "C++"
-        span:
-          text " Nim version: "
-          select(id = "nimversion"):
-            for version in knownVersions:
-              option:
-                text version
+        span(id = "playground"): text "Playground"
       a(id = "githublink", href = "https://github.com/PMunch/nim-playground-frontend"):
-        span: text "Code on GitHub"
+        span(id = "github"): text "Code on GitHub"
     mainarea:
       if showingTour:
         baseColumn:
@@ -261,6 +243,23 @@ proc createDom(data: RouterData): VNode =
             mainButton(onclick = () => (currentSection = min(currentSection + 1, totalSections - 1))):
               text "Next"
       baseColumn:
+        optionsBar:
+          span:
+            text "Font: "
+            input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "1", required = "required", onchange = changeFontSize)
+          span:
+            text " Target: "
+            select(id = "compilationtarget"):
+              option:
+                text "C"
+              option:
+                text "C++"
+          span:
+            text " Nim: "
+            select(id = "nimversion"):
+              for version in knownVersions:
+                option:
+                  text version         
         bigEditor(id = "editor", class = "monospace")
         bar:
           if not awaitingShare:
@@ -278,8 +277,8 @@ proc createDom(data: RouterData): VNode =
                 text "(ctrl-enter)"
           else:
             mainButton(class = "is-loading"):
-              text "Run!"
-        content2(id = "output"):
+              text "Run!"             
+        tdiv(id = "output"):
           pre(class = "monospace"):
             verbatim outputText[output]
 

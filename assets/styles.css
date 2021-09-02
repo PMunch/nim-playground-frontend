@@ -1,7 +1,8 @@
 :root {
   --editor-height: calc(100vh - 350px);
-  --editor-height-2: calc(100vh - 360px);
   --output-height: 10vh;
+  --output-width: calc(100vw - 2.1em);
+  --editor-background-color: #282a36;
 }
 
 body {
@@ -31,6 +32,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 2.4em;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .headerbar > a {
@@ -42,14 +44,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .headerbar > a > img {
-  padding: 0.5em;
-  padding-left: 3em;
+  padding-left: 1em;
+  padding-right: 0.8em;
   height: 1.2em;
 }
 
 .headerbar > a > span {
   color: lightgray;
-  margin: 1em;
   font-size:0.8em;
 }
 
@@ -59,15 +60,21 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   font-size: 1.2em;
   position: relative;
-  bottom: 0.5em;
 }
 
 .optionsbar {
-  height: 48px;
-  margin-right: 1em;
   font-size: 16px;
   align-self: center;
-  padding: 20px;
+  position: absolute;
+  right: 0;
+  z-index: 999;
+  background-color: var(--editor-background-color);
+  padding-right: 1em;
+  padding-top: 1em;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center; 
+  box-sizing: border-box;
 }
 
 .optionsbar input[type=number] {
@@ -77,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
 .optionsbar select, input[type=number] {
   background-color: #ccc;
   border-radius: 3px;
-  border: 3px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .optionsbar > span {
@@ -90,54 +97,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .CodeMirror {
-  max-height: var(--editor-height-2);
-  margin-top: 72px;
-}
-
-@media only screen and (min-width: 768px) {
-  .headerbar {
-    height: 2.8em;
-  }
-
-  .headerbar > a > img {
-    height: 1.5em;
-  }
-
-  .headerbar > a > span {
-    font-size: 1em;
-  }
-
-  .headerbar > a:first-child > span {
-    font-size: 1.5em;
-    bottom: 0.36em;
-    padding-left: 0.5em;
-  }
-
-  .optionsbar {
-    top: 2.8em;
-  }
-}
-
-@media only screen and (min-width: 574px) {
-  .optionsbar {
-    height: 24px;
-  }
-
-  .CodeMirror {
-    height: calc(100% - 24px);
-    margin-top: 10px;
-  }
-}
-
-@media only screen and (min-width: 385px) and (max-width: 574px) {
-  .optionsbar {
-    height: 24px;
-  }
-
-  .CodeMirror {
-    height: calc(100% - 48px);
-    margin-top: 48px;
-  }
+  height: calc(var(--editor-height) - 10px);
+  margin-top: 10px;
 }
 
 .mainarea {
@@ -165,17 +126,11 @@ h1, h2, h3, h4, h5, h6 {
   padding: 1.5em;
 }
 
-.content2 {
-  margin: 1.5em
-}
-
-@media only screen and (min-width: 1300px) {
-  .base {
-    min-width: 600px;
-  }
-
-  .content, .editor {
-    overflow: auto;
+@media only screen and (max-width: 1000px) {
+  .optionsbar {
+    position: relative;
+    padding: 0;
+    width: 100%;
   }
 }
 
@@ -231,7 +186,7 @@ code, pre {
 }
 
 .editor {
-  background-color: #282a36;
+  background-color: var(--editor-background-color);
 }
 
 span.hint {
@@ -249,7 +204,7 @@ span.error {
 .button {
   display: inline-block;
   padding: 0.2em 0.9em;
-  line-height:1.5em;
+  line-height: 1.5em;
   margin: 0.2em;
   text-decoration: none;
   font-size: 1em;
@@ -305,11 +260,18 @@ button .buttonhint {
 
 #output {
   height: var(--output-height);
-  overflow-y: auto;
+  width: var(--output-width);
+  max-width: 100%;
+  overflow: auto;
   flex-grow: 1;
+  margin: 1em;
 }
 
 #githublink {
   align-self: center;
   margin-left: auto;
+}
+
+#github {
+  margin-right: 0.5em;
 }
