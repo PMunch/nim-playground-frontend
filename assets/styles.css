@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-right: 0.8em;
   height: 1.2em;
 }
-
+7
 .headerbar > a > span {
   color: lightgray;
   font-size:0.8em;
@@ -62,19 +62,23 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
+#options-switch {
+  cursor: pointer;
+}
+
 .optionsbar {
   font-size: 16px;
   align-self: center;
-  position: absolute;
-  right: 0;
   z-index: 999;
   background-color: var(--editor-background-color);
-  padding-right: 1em;
+  padding-right: 0.5em;
   padding-top: 1em;
+  width: 100%;
   display: flex;
-  justify-content: flex-end; 
+  justify-content: center; 
   align-items: center; 
   box-sizing: border-box;
+  display: none;
 }
 
 .optionsbar input[type=number] {
@@ -127,16 +131,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .content {
   padding: 1.5em;
-}
-
-@media only screen and (max-width: 1000px) {
-  .optionsbar {
-    position: relative;
-    padding: 0;
-    padding-top: 0.5em;
-    width: 100%;
-    justify-content: center;
-  }
 }
 
 section {
@@ -279,4 +273,34 @@ button .buttonhint {
 
 #github {
   margin-right: 0.5em;
+}
+
+#options-switch {
+  margin-left: 2em;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+#buttons-left {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+
+#buttons-right {
+  display: flex;
+  flex-grow: 0;
+}
+
+@media only screen and (max-width: 1000px) {
+  #buttons, #buttons-left, #buttons-right {
+    flex-direction: column;
+  }
+
+  #buttons-right {
+    flex-grow: 1;
+  }
 }

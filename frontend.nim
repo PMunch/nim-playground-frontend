@@ -213,6 +213,7 @@ proc changeFontSize() =
     fontSizeInput = kdom.getElementById("fontsize")
   editor.applyStyle(style(fontSize, fontSizeInput.value & "px"))
 
+var options_enabled = false
 
 proc createDom(data: RouterData): VNode =
   let strhash = $data.hashPart
@@ -229,8 +230,18 @@ proc createDom(data: RouterData): VNode =
       a(href = "https://play.nim-lang.org"):
         img(src = "/assets/logo.svg")
         span(id = "playground"): text "Playground"
+      tdiv(id = "options-switch", onclick = () => 
+        (
+          let bar = kdom.getElementById("options-bar")
+          if options_enabled:
+            bar.style.display = "none"
+          else:
+            bar.style.display = "flex"
+          options_enabled = not options_enabled
+        )):
+        text "Options"
       a(id = "githublink", href = "https://github.com/PMunch/nim-playground-frontend"):
-        span(id = "github"): text "Code on GitHub"
+        span(id = "github"): text "GitHub"
     mainarea:
       if showingTour:
         baseColumn:
@@ -243,7 +254,7 @@ proc createDom(data: RouterData): VNode =
             mainButton(onclick = () => (currentSection = min(currentSection + 1, totalSections - 1))):
               text "Next"
       baseColumn:
-        optionsBar:
+        optionsBar(id = "options-bar"):
           span:
             text "Font: "
             input(`type` = "number", id = "fontsize", value = "13", `min` = "8", `max` = "50", step = "1", required = "required", onchange = changeFontSize)
@@ -261,23 +272,25 @@ proc createDom(data: RouterData): VNode =
                 option:
                   text version         
         bigEditor(id = "editor", class = "monospace")
-        bar:
-          if not awaitingShare:
-            otherButton(onclick = shareIx):
-              text "Share to ix"
-          else:
-            otherButton(class = "is-loading"):
-              text "Share to ix"
-          otherButton(onclick = switchOutput):
-            text "Showing: " & $output
-          if not runningCode:
-            mainButton(onclick = runCode):
-              text "Run!"
-              span(class = "buttonhint"):
-                text "(ctrl-enter)"
-          else:
-            mainButton(class = "is-loading"):
-              text "Run!"             
+        bar(id = "buttons"):
+          tdiv(id = "buttons-left"):
+            if not awaitingShare:
+              otherButton(onclick = shareIx):
+                text "Share to ix"
+            else:
+              otherButton(class = "is-loading"):
+                text "Share to ix"
+          tdiv(id = "buttons-right"):
+            otherButton(onclick = switchOutput):
+              text "Showing: " & $output
+            if not runningCode:
+              mainButton(onclick = runCode):
+                text "Run!"
+                span(class = "buttonhint"):
+                  text "(ctrl-enter)"
+            else:
+              mainButton(class = "is-loading"):
+                text "Run!"             
         tdiv(id = "output"):
           pre(class = "monospace"):
             verbatim outputText[output]
