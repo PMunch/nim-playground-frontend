@@ -1,5 +1,5 @@
 :root {
-  --editor-height: calc(100vh - 350px);
+  --editor-height: calc(100vh - 360px);
   --output-height: 10vh;
   --output-width: calc(100vw - 2.1em);
   --editor-background-color: #282a36;
@@ -60,10 +60,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   font-size: 1.2em;
   position: relative;
-}
-
-#options-switch {
-  cursor: pointer;
 }
 
 .optionsbar {
@@ -266,19 +262,6 @@ button .buttonhint {
   margin: 1em;
 }
 
-#githublink {
-  align-self: center;
-  margin-left: auto;
-}
-
-#github {
-  margin-right: 0.5em;
-}
-
-#options-switch {
-  margin-left: 2em;
-}
-
 #buttons {
   display: flex;
   flex-direction: row;
@@ -303,4 +286,38 @@ button .buttonhint {
   #buttons-right {
     flex-grow: 1;
   }
+}
+
+#options-switch {
+  align-self: center;
+  margin-left: auto;
+  cursor: pointer;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  justify-content: center;    
+}
+
+#options-gear {
+  height: 18px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+#options-switch:hover {
+  text-shadow: 0 0 0.45rem white;  
+}
+
+#footer {
+  height: 1.6rem;
+  font-size: 0.8rem;
+  background-color: #2c323e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#footer a {
+  text-decoration: none;
 }

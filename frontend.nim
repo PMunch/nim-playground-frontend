@@ -215,6 +215,14 @@ proc changeFontSize() =
 
 var options_enabled = false
 
+proc toggleOptions() =
+  let bar = kdom.getElementById("options-bar")
+  if options_enabled:
+    bar.style.display = "none"
+  else:
+    bar.style.display = "flex"
+  options_enabled = not options_enabled  
+
 proc createDom(data: RouterData): VNode =
   let strhash = $data.hashPart
   if strhash.len > "#ix=".len:
@@ -230,18 +238,9 @@ proc createDom(data: RouterData): VNode =
       a(href = "https://play.nim-lang.org"):
         img(src = "/assets/logo.svg")
         span(id = "playground"): text "Playground"
-      tdiv(id = "options-switch", onclick = () => 
-        (
-          let bar = kdom.getElementById("options-bar")
-          if options_enabled:
-            bar.style.display = "none"
-          else:
-            bar.style.display = "flex"
-          options_enabled = not options_enabled
-        )):
+      tdiv(id = "options-switch", onclick = () => (toggleOptions())):
         text "Options"
-      a(id = "githublink", href = "https://github.com/PMunch/nim-playground-frontend"):
-        span(id = "github"): text "GitHub"
+        img(src = "/assets/gear.png", id = "options-gear")
     mainarea:
       if showingTour:
         baseColumn:
@@ -294,6 +293,9 @@ proc createDom(data: RouterData): VNode =
         tdiv(id = "output"):
           pre(class = "monospace"):
             verbatim outputText[output]
+        tdiv(id = "footer"):
+          a(href = "https://github.com/PMunch/nim-playground-frontend"):
+            text "Link To Git Repository"
 
 setRenderer createDom, "ROOT", postRender
 setForeignNodeId "tour"
