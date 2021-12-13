@@ -1,7 +1,8 @@
 :root {
-  --editor-height: calc(100vh - 350px);
-  --editor-height-2: calc(100vh - 385px);
+  --editor-height: calc(100vh - 360px);
   --output-height: 10vh;
+  --output-width: calc(100vw - 2.1em);
+  --editor-background-color: #282a36;
 }
 
 body {
@@ -29,6 +30,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .headerbar {
   height: 2.4em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .headerbar > a {
@@ -40,14 +44,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .headerbar > a > img {
-  padding: 0.5em;
-  padding-left: 3em;
+  padding-left: 1em;
+  padding-right: 0.8em;
   height: 1.2em;
 }
-
+7
 .headerbar > a > span {
   color: lightgray;
-  margin: 1em;
   font-size:0.8em;
 }
 
@@ -57,16 +60,21 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   font-size: 1.2em;
   position: relative;
-  bottom: 0.5em;
 }
 
 .optionsbar {
-  position: absolute;
-  top: 2.4em;
-  right: 0px;
-  height: 48px;
-  margin-right: 1em;
   font-size: 16px;
+  align-self: center;
+  z-index: 999;
+  background-color: var(--editor-background-color);
+  padding-right: 0.5em;
+  padding-top: 0.8em;
+  width: 100%;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  box-sizing: border-box;
+  display: none;
 }
 
 .optionsbar input[type=number] {
@@ -76,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
 .optionsbar select, input[type=number] {
   background-color: #ccc;
   border-radius: 3px;
-  border: 3px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .optionsbar > span {
@@ -86,57 +94,14 @@ h1, h2, h3, h4, h5, h6 {
 
 #editor {
   max-height: var(--editor-height);
+  width: 100vw;
+  overflow: auto;
 }
 
 .CodeMirror {
-  max-height: var(--editor-height-2);
-  margin-top: 72px;
-}
-
-@media only screen and (min-width: 768px) {
-  .headerbar {
-    height: 2.8em;
-  }
-
-  .headerbar > a > img {
-    height: 1.5em;
-  }
-
-  .headerbar > a > span {
-    font-size: 1em;
-  }
-
-  .headerbar > a:first-child > span {
-    font-size: 1.5em;
-    bottom: 0.36em;
-    padding-left: 0.5em;
-  }
-
-  .optionsbar {
-    top: 2.8em;
-  }
-}
-
-@media only screen and (min-width: 574px) {
-  .optionsbar {
-    height: 24px;
-  }
-
-  .CodeMirror {
-    height: calc(100% - 24px);
-    margin-top: 24px;
-  }
-}
-
-@media only screen and (min-width: 385px) and (max-width: 574px) {
-  .optionsbar {
-    height: 24px;
-  }
-
-  .CodeMirror {
-    height: calc(100% - 48px);
-    margin-top: 48px;
-  }
+  height: calc(var(--editor-height) - 10px);
+  overflow: hidden;
+  margin-top: 10px;
 }
 
 .mainarea {
@@ -162,20 +127,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .content {
   padding: 1.5em;
-}
-
-.content2 {
-  margin: 1.5em
-}
-
-@media only screen and (min-width: 1300px) {
-  .base {
-    min-width: 600px;
-  }
-
-  .content, .editor {
-    overflow: auto;
-  }
 }
 
 section {
@@ -230,7 +181,7 @@ code, pre {
 }
 
 .editor {
-  background-color: #282a36;
+  background-color: var(--editor-background-color);
 }
 
 span.hint {
@@ -248,7 +199,7 @@ span.error {
 .button {
   display: inline-block;
   padding: 0.2em 0.9em;
-  line-height:1.5em;
+  line-height: 1.5em;
   margin: 0.2em;
   text-decoration: none;
   font-size: 1em;
@@ -304,6 +255,69 @@ button .buttonhint {
 
 #output {
   height: var(--output-height);
-  overflow-y: auto;
+  width: var(--output-width);
+  max-width: 100%;
+  overflow: auto;
   flex-grow: 1;
+  margin: 1em;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+#buttons-left {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+
+#buttons-right {
+  display: flex;
+  flex-grow: 0;
+}
+
+@media only screen and (max-width: 1000px) {
+  #buttons, #buttons-left, #buttons-right {
+    flex-direction: column;
+  }
+
+  #buttons-right {
+    flex-grow: 1;
+  }
+}
+
+#options-switch {
+  align-self: center;
+  margin-left: auto;
+  cursor: pointer;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  justify-content: center;    
+}
+
+#options-gear {
+  height: 18px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+#options-switch:hover {
+  text-shadow: 0 0 0.45rem white;  
+}
+
+#footer {
+  height: 1.6rem;
+  font-size: 0.8rem;
+  background-color: #2c323e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#footer a {
+  text-decoration: none;
 }
