@@ -3,6 +3,7 @@ import karax / [vstyles, kdom, kajax]
 import jsffi except `&`
 import json
 import sugar
+import std/uri
 
 import macros, strutils
 
@@ -191,6 +192,12 @@ proc postRender(data: RouterData) =
       "Cmd-Enter": proc(cm: CodeMirror) =
         if (not runningCode): runCode()
     })
+
+    let query = decodeUrl(parseUri($window.location.href).query)
+    const queryName = "code="
+    if query.len > queryName.len and query[0..4] == queryName:
+      myCodeMirror.setValue(query[5..^1])
+
   if showingTour:
     var tourContent = kdom.getElementById("tour")
     let sections = tourContent.getElementsByTagName("section")
@@ -215,7 +222,6 @@ proc changeFontSize() =
     fontSizeInput = kdom.getElementById("fontsize")
   editor.applyStyle(style(fontSize, fontSizeInput.value & "px"))
   myCodeMirror.refresh()
-
 
 proc createDom(data: RouterData): VNode =
   let strhash = $data.hashPart
