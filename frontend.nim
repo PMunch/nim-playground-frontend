@@ -74,7 +74,7 @@ var
   outputText: array[Output.low..Output.high, string]
   runningCode = false
   awaitingShare = false
-  loadedIx = ""
+  loadedPasty = ""
   showingTour = false
   loadedTour = ""
   codeCurrentSection = -1
@@ -113,27 +113,27 @@ proc runCode() =
     request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": $compilationTarget, "outputFormat": "html", "version": nimversion}
   ajaxPost("/compile", @[], $request, cb)
 
-proc shareIx() =
+proc sharePaste() =
   awaitingShare = true
   proc cb(httpStatus: int, response: cstring) =
     awaitingShare = false
     if httpStatus == 200:
-      let ixid = ($response).rsplit("/", maxsplit = 1)[^1]
-      outputText[Output] = "https://play.nim-lang.org/#ix=" & ixid
+      let id = ($response).rsplit("/", maxsplit = 1)[^1]
+      outputText[Output] = "https://play.nim-lang.org/#pasty=" & id
       outputText[Debug] = ""
       output = Output
       if not showingTour:
-        loadedIx = ixid
-        setHash("#ix=" & loadedIx)
+        loadedPasty = id
+        setHash("#pasty=" & loadedPasty)
     else:
       outputText[Debug] = "No reply from server:<br/>" & $httpStatus & ": " & $response
       outputText[Output] = ""
       output = Debug
 
   let request = %*{"code": $myCodeMirror.getValue(), "compilationTarget": "c"}
-  ajaxPost("/ix", @[], $request, cb)
+  ajaxPost("/pasty", @[], $request, cb)
 
-proc loadIx(id: string) =
+proc loadPaste(id: string) =
   proc cb(httpStatus: int, response: cstring) =
     if httpStatus == 200:
       outputText[Output] = ""
@@ -145,8 +145,8 @@ proc loadIx(id: string) =
       outputText[Output] = ""
       output = Debug
 
-  ajaxGet("/ix/" & id, @[], cb)
-  loadedIx = id
+  ajaxGet("/pasty/" & id, @[], cb)
+  loadedPasty = id
 
 proc loadTour(id: string) =
   proc cb(httpStatus: int, response: cstring) =
@@ -219,10 +219,10 @@ proc changeFontSize() =
 
 proc createDom(data: RouterData): VNode =
   let strhash = $data.hashPart
-  if strhash.len > "#ix=".len:
-    if strhash[0..3] == "#ix=":
-      if loadedIx != strhash[4..^1]:
-        loadIx(strhash[4..^1])
+  if strhash.len > "#pasty=".len:
+    if strhash[0..6] == "#pasty=":
+      if loadedPasty != strhash[7..^1]:
+        loadPaste(strhash[7..^1])
   if strhash.len > "#tour=".len:
     if strhash[0..5] == "#tour=":
       if loadedTour != strhash[6..^1]:
@@ -266,7 +266,7 @@ proc createDom(data: RouterData): VNode =
                     text version
         bar:
           if not awaitingShare:
-            otherButton(onclick = shareIx):
+            otherButton(onclick = sharePaste):
               text "Share with pasty.ee"
           else:
             otherButton(class = "is-loading"):
