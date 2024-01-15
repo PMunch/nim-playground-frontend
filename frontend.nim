@@ -265,10 +265,10 @@ proc createDom(data: RouterData): VNode =
         bar:
           if not awaitingShare:
             otherButton(onclick = shareIx):
-              text "Share to ix"
+              text "Share with pasty.ee"
           else:
             otherButton(class = "is-loading"):
-              text "Share to ix"
+              text "Share with pasty.ee"
           otherButton(onclick = switchOutput):
             text "Showing: " & $output
           if not runningCode:
