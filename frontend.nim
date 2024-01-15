@@ -118,7 +118,7 @@ proc shareIx() =
   proc cb(httpStatus: int, response: cstring) =
     awaitingShare = false
     if httpStatus == 200:
-      let ixid = ($response).splitr("/", maxsplit = 1)[^1]
+      let ixid = ($response).rsplit("/", maxsplit = 1)[^1]
       outputText[Output] = "https://play.nim-lang.org/#ix=" & ixid
       outputText[Debug] = ""
       output = Output
